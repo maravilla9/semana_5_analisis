@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Relacionar Columnas – Semana 5</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { height: 100%; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #080f18;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(180deg, #0d1b2a 0%, #080f18 100%);
+    border-bottom: 2px solid #F0A500;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 4px;
+    background: #F0A500;
+    border-radius: 2px;
+    opacity: 0.5;
+  }
+  .header img { height: 34px; width: auto; object-fit: contain; }
+  .header-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(10px, 2.5vw, 13px);
+    font-weight: 700;
+    color: #F0A500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .header-sub {
+    font-size: clamp(9px, 2vw, 11px);
+    color: #5a7a99;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── CONTENT ── */
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(16px, 3vw, 28px) clamp(12px, 3vw, 24px);
+    gap: clamp(12px, 2.5vw, 20px);
+  }
+
+  /* ── SCORE STRIP ── */
+  .score-strip {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 720px;
+  }
+  .score-pill {
+    flex: 1;
+    background: #0d1b2a;
+    border-radius: 16px;
+    padding: clamp(7px, 1.5vw, 10px) 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #1a2d42;
+    gap: 1px;
+    position: relative;
+    overflow: hidden;
+  }
+  .score-pill::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .score-pill.hits::before { background: #4ade80; }
+  .score-pill.pts::before  { background: #F0A500; }
+  .score-pill.miss::before { background: #f87171; }
+  .score-pill .lbl { font-size: clamp(9px, 1.8vw, 11px); color: #5a7a99; text-transform: uppercase; letter-spacing: 0.5px; }
+  .score-pill .val { font-family: 'Syne', sans-serif; font-size: clamp(16px, 3.5vw, 22px); font-weight: 800; }
+  .score-pill.pts  .val { color: #F0A500; }
+  .score-pill.hits .val { color: #4ade80; }
+  .score-pill.miss .val { color: #f87171; }
+
+  /* ── INSTRUCCIÓN ── */
+  .instruccion {
+    font-size: clamp(11px, 2.3vw, 13px);
+    color: #5a7a99;
+    text-align: center;
+    max-width: 720px;
+    width: 100%;
+  }
+  .instruccion strong { color: #F0A500; }
+
+  /* ── COLUMNAS ── */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(10px, 2vw, 20px);
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .col-label {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(9px, 2vw, 11px);
+    font-weight: 700;
+    color: #5a7a99;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  /* ── TARJETA CONCEPTO (izquierda) ── */
+  .concept-card {
+    background: #0d1b2a;
+    border: 1.5px solid #1a2d42;
+    border-radius: 16px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.25s, transform 0.15s, box-shadow 0.25s;
+    position: relative;
+  }
+  .concept-card:hover:not(.matched-ok):not(.matched-fail) {
+    border-color: #F0A500;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(240,165,0,0.15);
+  }
+  .concept-card.selected {
+    border-color: #F0A500;
+    box-shadow: 0 0 0 3px rgba(240,165,0,0.25);
+    transform: translateY(-2px);
+  }
+  .concept-card.matched-ok {
+    border-color: #4ade80;
+    box-shadow: 0 0 0 2px rgba(74,222,128,0.2);
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .concept-card.matched-fail {
+    border-color: #f87171;
+    animation: shake 0.4s ease;
+  }
+  .concept-img {
+    width: 100%;
+    height: clamp(55px, 10vw, 80px);
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.75) saturate(0.8);
+    transition: filter 0.25s;
+  }
+  .concept-card:hover .concept-img,
+  .concept-card.selected .concept-img { filter: brightness(0.9) saturate(1); }
+  .concept-card.matched-ok .concept-img { filter: brightness(0.7) saturate(0.6); }
+  .concept-body {
+    padding: clamp(6px, 1.5vw, 10px) clamp(8px, 2vw, 12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .concept-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(11px, 2.5vw, 14px);
+    font-weight: 700;
+    color: #e2eaf3;
+    transition: color 0.2s;
+  }
+  .concept-card.selected .concept-name { color: #F0A500; }
+  .concept-card.matched-ok .concept-name { color: #4ade80; }
+  .concept-card.matched-fail .concept-name { color: #f87171; }
+  .concept-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #1a2d42;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .concept-card.selected .concept-dot { background: #F0A500; }
+  .concept-card.matched-ok .concept-dot { background: #4ade80; }
+
+  /* ── TARJETA DEFINICIÓN (derecha) ── */
+  .def-card {
+    background: #0d1b2a;
+    border: 1.5px solid #1a2d42;
+    border-radius: 16px;
+    padding: clamp(9px, 2vw, 13px) clamp(10px, 2.5vw, 14px);
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+    min-height: clamp(55px, 10vw, 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .def-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: #1a2d42;
+    transition: background 0.2s;
+  }
+  .def-card:hover:not(.matched-ok):not(.matched-fail):not(.used) {
+    border-color: #F0A500;
+    background: #111e2e;
+    transform: translateX(3px);
+    box-shadow: -4px 0 16px rgba(240,165,0,0.1);
+  }
+  .def-card:hover::before { background: #F0A500; }
+  .def-card.matched-ok {
+    border-color: #4ade80;
+    background: #0a2318;
+    pointer-events: none;
+  }
+  .def-card.matched-ok::before { background: #4ade80; }
+  .def-card.matched-fail {
+    border-color: #f87171;
+    background: #200a0a;
+    animation: shake 0.4s ease;
+  }
+  .def-card.matched-fail::before { background: #f87171; }
+  .def-card.used { opacity: 0.25; pointer-events: none; }
+  .def-text {
+    font-size: clamp(10px, 2.2vw, 12px);
+    color: #c8d8e8;
+    line-height: 1.45;
+  }
+  .def-example {
+    font-size: clamp(9px, 1.8vw, 11px);
+    color: #F0A500;
+    font-style: italic;
+    opacity: 0.8;
+  }
+  .def-card.matched-ok .def-text { color: #86efac; }
+  .def-card.matched-ok .def-example { color: #4ade80; }
+
+  /* ── FEEDBACK ── */
+  .feedback {
+    width: 100%;
+    max-width: 720px;
+    border-radius: 14px;
+    padding: clamp(10px, 2vw, 14px) 16px;
+    font-size: clamp(11px, 2.3vw, 13px);
+    line-height: 1.5;
+    display: none;
+    text-align: center;
+    border: 1px solid transparent;
+  }
+  .feedback.show   { display: block; }
+  .feedback.correct { background: #0a2318; color: #86efac; border-color: #166534; }
+  .feedback.wrong   { background: #200a0a; color: #fca5a5; border-color: #7f1d1d; }
+  .feedback.hint    { background: #1a1a00; color: #fde68a; border-color: #854d0e; }
+
+  /* ── RESULT ── */
+  .result-screen {
+    width: 100%;
+    max-width: 480px;
+    background: #0d1b2a;
+    border: 1px solid #1a2d42;
+    border-radius: 28px;
+    padding: clamp(28px, 6vw, 44px) clamp(20px, 5vw, 32px);
+    text-align: center;
+    display: none;
+    margin: auto;
+  }
+  .result-screen.show { display: block; }
+  .result-emoji { font-size: clamp(44px, 11vw, 60px); margin-bottom: 12px; }
+  .result-big   { font-family: 'Syne', sans-serif; font-size: clamp(48px, 12vw, 64px); font-weight: 800; color: #F0A500; line-height: 1; }
+  .result-of    { font-size: clamp(11px, 2.5vw, 13px); color: #5a7a99; margin-bottom: 6px; }
+  .result-msg   { font-size: clamp(13px, 3vw, 15px); color: #c8d8e8; margin: 14px 0 20px; line-height: 1.6; }
+  .result-breakdown { display: flex; gap: 10px; justify-content: center; margin-bottom: 22px; flex-wrap: wrap; }
+  .rb-pill { padding: 7px clamp(14px, 3.5vw, 20px); border-radius: 50px; font-size: clamp(11px, 2.5vw, 13px); font-weight: 700; }
+  .rb-pill.c { background: #0a2318; color: #4ade80; border: 1px solid #166534; }
+  .rb-pill.w { background: #200a0a; color: #f87171; border: 1px solid #7f1d1d; }
+  .btn-restart {
+    padding: clamp(11px, 2.5vw, 14px) clamp(26px, 6vw, 36px);
+    border-radius: 14px; border: none;
+    background: #F0A500; color: #080f18;
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(13px, 3vw, 15px); font-weight: 700; cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.5px;
+  }
+  .btn-restart:hover { background: #e09500; transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: #060d14;
+    border-top: 1px solid #1a2d42;
+    padding: 9px 20px;
+    text-align: center;
+    font-size: clamp(10px, 2vw, 12px);
+    color: #5a7a99;
+    flex-shrink: 0;
+  }
+  .footer strong { color: #F0A500; }
+
+  /* ── ANIMACIONES ── */
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+  @keyframes popIn {
+    from { transform: scale(0.92); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+  .concept-card, .def-card { animation: popIn 0.3s ease both; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="https://i.postimg.cc/FKz4sz2C/logoutelsinfondo.png" alt="Logo UTEL">
+  <div class="header-title">Análisis de la Información y la Opinión Pública</div>
+  <div class="header-sub">Semana 5 · Poder Político</div>
+</div>
+
+<div class="content">
+
+  <div id="game-section" style="width:100%;max-width:720px;display:flex;flex-direction:column;gap:clamp(10px,2vw,16px);align-items:center;">
+
+    <div class="score-strip">
+      <div class="score-pill hits"><span class="lbl">Correctas</span><span class="val" id="cnt-hits">0</span></div>
+      <div class="score-pill pts"><span class="lbl">Progreso</span><span class="val" id="cnt-pts">0/5</span></div>
+      <div class="score-pill miss"><span class="lbl">Incorrectas</span><span class="val" id="cnt-miss">0</span></div>
+    </div>
+
+    <div class="instruccion">
+      Selecciona una <strong>Forma de Gobierno</strong> y luego su definición correspondiente
+    </div>
+
+    <div class="columns">
+      <div>
+        <div class="col-label">⬡ Forma de Gobierno</div>
+        <div id="concepts"></div>
+      </div>
+      <div>
+        <div class="col-label">☰ Definición</div>
+        <div id="defs"></div>
+      </div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div class="result-screen" id="result-screen">
+    <div class="result-emoji" id="res-emoji"></div>
+    <div class="result-big" id="res-score"></div>
+    <div class="result-of">de 5 pares correctos</div>
+    <div class="result-msg" id="res-msg"></div>
+    <div class="result-breakdown">
+      <div class="rb-pill c" id="rb-c"></div>
+      <div class="rb-pill w" id="rb-w"></div>
+    </div>
+    <button class="btn-restart" onclick="restart()">↺ Jugar de nuevo</button>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>Dr. Armando Sandoval Maravilla</strong> · Análisis de la Información y la Opinión Pública
+</div>
+
+<script>
+const PAIRS = [
+  {
+    concept: "Monarquía",
+    img: "https://images.unsplash.com/photo-1529473814998-077b028f02d0?w=400&q=70&auto=format&fit=crop",
+    def: "El poder se hereda. Gobierna un rey o una reina como jefe del Estado.",
+    example: "Ej: El Reino de España"
+  },
+  {
+    concept: "República",
+    img: "https://images.unsplash.com/photo-1555938798-77e17e6a2bb3?w=400&q=70&auto=format&fit=crop",
+    def: "El poder no se hereda. El jefe de Estado es elegido por la población o sus representantes.",
+    example: "Ej: México"
+  },
+  {
+    concept: "Dictadura",
+    img: "https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=400&q=70&auto=format&fit=crop",
+    def: "El poder se concentra en una sola persona o grupo. No hay elecciones libres.",
+    example: "Ej: Corea del Norte, Cuba"
+  },
+  {
+    concept: "Aristocracia",
+    img: "https://images.unsplash.com/photo-1520986606214-8b456906c813?w=400&q=70&auto=format&fit=crop",
+    def: "El poder está en manos de un grupo reducido basado en nobleza, élites o privilegios sociales.",
+    example: "Ej: La Venecia medieval"
+  },
+  {
+    concept: "Democracia",
+    img: "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=400&q=70&auto=format&fit=crop",
+    def: "El poder reside en el pueblo. Los gobernantes son elegidos mediante elecciones libres.",
+    example: "Ej: Canadá, Alemania"
+  }
+];
+
+let selectedConcept = null;
+let hits = 0, miss = 0;
+
+function shuffle(a) {
+  const b = [...a];
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+
+function restart() {
+  selectedConcept = null; hits = 0; miss = 0;
+  document.getElementById('cnt-hits').textContent = 0;
+  document.getElementById('cnt-miss').textContent = 0;
+  document.getElementById('cnt-pts').textContent = '0/5';
+  document.getElementById('result-screen').classList.remove('show');
+  document.getElementById('game-section').style.display = '';
+  hideFeedback();
+  render();
+}
+
+function render() {
+  const shuffledDefs = shuffle(PAIRS.map((p, i) => ({ ...p, idx: i })));
+
+  // CONCEPTOS
+  const conceptsEl = document.getElementById('concepts');
+  conceptsEl.innerHTML = '';
+  PAIRS.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'concept-card';
+    div.dataset.idx = i;
+    div.style.animationDelay = (i * 0.07) + 's';
+    div.innerHTML = `
+      <img class="concept-img" src="${p.img}" alt="${p.concept}" loading="lazy">
+      <div class="concept-body">
+        <span class="concept-name">${p.concept}</span>
+        <span class="concept-dot"></span>
+      </div>`;
+    div.onclick = () => selectConcept(i);
+    conceptsEl.appendChild(div);
+  });
+
+  // DEFINICIONES
+  const defsEl = document.getElementById('defs');
+  defsEl.innerHTML = '';
+  shuffledDefs.forEach((p, si) => {
+    const div = document.createElement('div');
+    div.className = 'def-card';
+    div.dataset.idx = p.idx;
+    div.style.animationDelay = (si * 0.07) + 's';
+    div.innerHTML = `
+      <span class="def-text">${p.def}</span>
+      <span class="def-example">${p.example}</span>`;
+    div.onclick = () => selectDef(p.idx, div);
+    defsEl.appendChild(div);
+  });
+}
+
+function selectConcept(idx) {
+  const cards = document.querySelectorAll('.concept-card');
+  if (cards[idx].classList.contains('matched-ok')) return;
+  cards.forEach(c => {
+    if (!c.classList.contains('matched-ok')) c.classList.remove('selected');
+  });
+  cards[idx].classList.add('selected');
+  selectedConcept = idx;
+  hideFeedback();
+}
+
+function selectDef(idx, defEl) {
+  if (selectedConcept === null) {
+    showFeedback('👆 Primero selecciona una Forma de Gobierno en la columna izquierda.', 'hint');
+    return;
+  }
+  if (defEl.classList.contains('matched-ok')) return;
+
+  const conceptCards = document.querySelectorAll('.concept-card');
+  const correct = (selectedConcept === idx);
+
+  if (correct) {
+    hits++;
+    document.getElementById('cnt-hits').textContent = hits;
+    document.getElementById('cnt-pts').textContent = hits + '/5';
+    conceptCards[selectedConcept].classList.remove('selected');
+    conceptCards[selectedConcept].classList.add('matched-ok');
+    defEl.classList.add('matched-ok');
+    showFeedback('✓ ¡Correcto! ' + PAIRS[idx].concept + ': ' + PAIRS[idx].def, 'correct');
+    selectedConcept = null;
+    if (hits === PAIRS.length) setTimeout(showResult, 900);
+  } else {
+    miss++;
+    document.getElementById('cnt-miss').textContent = miss;
+    conceptCards[selectedConcept].classList.remove('selected');
+    conceptCards[selectedConcept].classList.add('matched-fail');
+    defEl.classList.add('matched-fail');
+    showFeedback('✗ Incorrecto. ' + PAIRS[selectedConcept].concept + ' no corresponde a esa definición. Inténtalo de nuevo.', 'wrong');
+    const sc = selectedConcept;
+    setTimeout(() => {
+      conceptCards[sc].classList.remove('matched-fail', 'selected');
+      defEl.classList.remove('matched-fail');
+    }, 1200);
+    selectedConcept = null;
+  }
+}
+
+function showFeedback(msg, type) {
+  const fb = document.getElementById('feedback');
+  fb.textContent = msg;
+  fb.className = 'feedback show ' + type;
+}
+function hideFeedback() {
+  document.getElementById('feedback').className = 'feedback';
+}
+
+function showResult() {
+  document.getElementById('game-section').style.display = 'none';
+  document.getElementById('result-screen').classList.add('show');
+  document.getElementById('res-score').textContent = hits;
+  document.getElementById('rb-c').textContent = '✔ ' + hits + ' correctas';
+  document.getElementById('rb-w').textContent = '✘ ' + miss + ' incorrectas';
+  const data = [
+    { e: '😟', m: 'No te rindas, repasa las formas de gobierno y vuelve a intentarlo.' },
+    { e: '🤔', m: 'Vas bien, algunos conceptos aún necesitan repaso.' },
+    { e: '😊', m: 'Buen trabajo, ya tienes un manejo sólido del tema.' },
+    { e: '🏆', m: '¡Excelente! Dominaste completamente las Formas de Gobierno.' },
+  ];
+  const d = hits <= 1 ? data[0] : hits <= 3 ? data[1] : hits <= 4 ? data[2] : data[3];
+  document.getElementById('res-emoji').textContent = d.e;
+  document.getElementById('res-msg').textContent = d.m;
+}
+
+restart();
+</script>
+</body>
+</html>
