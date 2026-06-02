@@ -4,384 +4,293 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Relacionar Columnas – Semana 5</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *{box-sizing:border-box;margin:0;padding:0;}
 
-  html { height: 100%; }
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #080f18;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
+  html,body{
+    height:100%;
+    font-family:'Inter',sans-serif;
+    background:#080f18;
+    color:#e2eaf3;
   }
-
-  /* ── HEADER ── */
-  .header {
-    background: linear-gradient(180deg, #0d1b2a 0%, #080f18 100%);
-    border-bottom: 2px solid #F0A500;
-    padding: 10px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    flex-shrink: 0;
-    position: relative;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: -8px; left: 50%; transform: translateX(-50%);
-    width: 60px; height: 4px;
-    background: #F0A500;
-    border-radius: 2px;
-    opacity: 0.5;
-  }
-  .header img { height: 34px; width: auto; object-fit: contain; }
-  .header-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(10px, 2.5vw, 13px);
-    font-weight: 700;
-    color: #F0A500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 1.3;
-  }
-  .header-sub {
-    font-size: clamp(9px, 2vw, 11px);
-    color: #5a7a99;
-    text-align: center;
-    letter-spacing: 0.3px;
+  body{
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
   }
 
-  /* ── CONTENT ── */
-  .content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: clamp(16px, 3vw, 28px) clamp(12px, 3vw, 24px);
-    gap: clamp(12px, 2.5vw, 20px);
+  /* HEADER */
+  .header{
+    background:#0b141f;
+    border-bottom:2px solid #F0A500;
+    padding:10px 20px 12px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    flex-shrink:0;
+  }
+  .header img{height:32px;object-fit:contain;}
+  .header-title{
+    font-family:'Syne',sans-serif;
+    font-size:clamp(11px,2.4vw,14px);
+    font-weight:800;
+    color:#F0A500;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    text-align:center;
+  }
+  .header-sub{font-size:clamp(9px,1.8vw,11px);color:#4a6a88;text-align:center;letter-spacing:.3px;}
+
+  /* CONTENT */
+  .content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:clamp(14px,3vw,28px) clamp(14px,3vw,24px) clamp(10px,2vw,20px);
+    gap:clamp(10px,2vw,16px);
   }
 
-  /* ── SCORE STRIP ── */
-  .score-strip {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    max-width: 720px;
+  /* SCORE */
+  .score-strip{display:flex;gap:10px;width:100%;max-width:700px;}
+  .s-pill{
+    flex:1;background:#0d1b2a;border-radius:14px;
+    padding:8px 10px;display:flex;flex-direction:column;
+    align-items:center;gap:1px;
+    border-top:3px solid transparent;
   }
-  .score-pill {
-    flex: 1;
-    background: #0d1b2a;
-    border-radius: 16px;
-    padding: clamp(7px, 1.5vw, 10px) 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #1a2d42;
-    gap: 1px;
-    position: relative;
-    overflow: hidden;
-  }
-  .score-pill::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-  }
-  .score-pill.hits::before { background: #4ade80; }
-  .score-pill.pts::before  { background: #F0A500; }
-  .score-pill.miss::before { background: #f87171; }
-  .score-pill .lbl { font-size: clamp(9px, 1.8vw, 11px); color: #5a7a99; text-transform: uppercase; letter-spacing: 0.5px; }
-  .score-pill .val { font-family: 'Syne', sans-serif; font-size: clamp(16px, 3.5vw, 22px); font-weight: 800; }
-  .score-pill.pts  .val { color: #F0A500; }
-  .score-pill.hits .val { color: #4ade80; }
-  .score-pill.miss .val { color: #f87171; }
+  .s-pill.hits{border-color:#4ade80;}
+  .s-pill.pts {border-color:#F0A500;}
+  .s-pill.miss{border-color:#f87171;}
+  .s-pill .lbl{font-size:clamp(8px,1.8vw,10px);color:#4a6a88;text-transform:uppercase;letter-spacing:.5px;}
+  .s-pill .val{font-family:'Syne',sans-serif;font-size:clamp(17px,4vw,24px);font-weight:800;}
+  .s-pill.hits .val{color:#4ade80;}
+  .s-pill.pts  .val{color:#F0A500;}
+  .s-pill.miss .val{color:#f87171;}
 
-  /* ── INSTRUCCIÓN ── */
-  .instruccion {
-    font-size: clamp(11px, 2.3vw, 13px);
-    color: #5a7a99;
-    text-align: center;
-    max-width: 720px;
-    width: 100%;
-  }
-  .instruccion strong { color: #F0A500; }
+  /* INSTRUCCION */
+  .tip{font-size:clamp(11px,2.2vw,13px);color:#4a6a88;text-align:center;}
+  .tip b{color:#F0A500;}
 
-  /* ── COLUMNAS ── */
-  .columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(10px, 2vw, 20px);
-    width: 100%;
-    max-width: 720px;
+  /* GRID */
+  .columns{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(10px,2vw,18px);
+    width:100%;max-width:700px;
+    align-items:start;
   }
 
-  .col-label {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(9px, 2vw, 11px);
-    font-weight: 700;
-    color: #5a7a99;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
-    text-align: center;
+  .col-head{
+    font-family:'Syne',sans-serif;
+    font-size:clamp(9px,1.8vw,11px);font-weight:700;
+    color:#4a6a88;text-transform:uppercase;letter-spacing:1px;
+    text-align:center;margin-bottom:8px;
   }
 
-  /* ── TARJETA CONCEPTO (izquierda) ── */
-  .concept-card {
-    background: #0d1b2a;
-    border: 1.5px solid #1a2d42;
-    border-radius: 16px;
-    margin-bottom: 8px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: border-color 0.25s, transform 0.15s, box-shadow 0.25s;
-    position: relative;
+  /* CONCEPT CARDS */
+  .c-card{
+    border-radius:18px;
+    border:2px solid #1a2d42;
+    overflow:hidden;
+    cursor:pointer;
+    margin-bottom:8px;
+    transition:border-color .2s,box-shadow .2s,transform .15s;
+    background:#0d1b2a;
+    position:relative;
   }
-  .concept-card:hover:not(.matched-ok):not(.matched-fail) {
-    border-color: #F0A500;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(240,165,0,0.15);
+  .c-card:last-child{margin-bottom:0;}
+  .c-card:hover:not(.ok):not(.err){
+    border-color:#F0A500;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(240,165,0,.18);
   }
-  .concept-card.selected {
-    border-color: #F0A500;
-    box-shadow: 0 0 0 3px rgba(240,165,0,0.25);
-    transform: translateY(-2px);
+  .c-card.sel{
+    border-color:#F0A500;
+    box-shadow:0 0 0 3px rgba(240,165,0,.22);
+    transform:translateY(-2px);
   }
-  .concept-card.matched-ok {
-    border-color: #4ade80;
-    box-shadow: 0 0 0 2px rgba(74,222,128,0.2);
-    pointer-events: none;
-    opacity: 0.85;
-  }
-  .concept-card.matched-fail {
-    border-color: #f87171;
-    animation: shake 0.4s ease;
-  }
-  .concept-img {
-    width: 100%;
-    height: clamp(55px, 10vw, 80px);
-    object-fit: cover;
-    display: block;
-    filter: brightness(0.75) saturate(0.8);
-    transition: filter 0.25s;
-  }
-  .concept-card:hover .concept-img,
-  .concept-card.selected .concept-img { filter: brightness(0.9) saturate(1); }
-  .concept-card.matched-ok .concept-img { filter: brightness(0.7) saturate(0.6); }
-  .concept-body {
-    padding: clamp(6px, 1.5vw, 10px) clamp(8px, 2vw, 12px);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 6px;
-  }
-  .concept-name {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(11px, 2.5vw, 14px);
-    font-weight: 700;
-    color: #e2eaf3;
-    transition: color 0.2s;
-  }
-  .concept-card.selected .concept-name { color: #F0A500; }
-  .concept-card.matched-ok .concept-name { color: #4ade80; }
-  .concept-card.matched-fail .concept-name { color: #f87171; }
-  .concept-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #1a2d42;
-    flex-shrink: 0;
-    transition: background 0.2s;
-  }
-  .concept-card.selected .concept-dot { background: #F0A500; }
-  .concept-card.matched-ok .concept-dot { background: #4ade80; }
+  .c-card.ok{border-color:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.15);pointer-events:none;}
+  .c-card.err{border-color:#f87171;animation:shake .38s ease;}
 
-  /* ── TARJETA DEFINICIÓN (derecha) ── */
-  .def-card {
-    background: #0d1b2a;
-    border: 1.5px solid #1a2d42;
-    border-radius: 16px;
-    padding: clamp(9px, 2vw, 13px) clamp(10px, 2.5vw, 14px);
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
-    min-height: clamp(55px, 10vw, 80px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 3px;
-    position: relative;
-    overflow: hidden;
+  /* imagen decorativa dentro de la card — SVG inline por tema */
+  .c-visual{
+    height:clamp(52px,9vw,78px);
+    display:flex;align-items:center;justify-content:center;
+    font-size:clamp(28px,6vw,46px);
+    position:relative;overflow:hidden;
   }
-  .def-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: #1a2d42;
-    transition: background 0.2s;
-  }
-  .def-card:hover:not(.matched-ok):not(.matched-fail):not(.used) {
-    border-color: #F0A500;
-    background: #111e2e;
-    transform: translateX(3px);
-    box-shadow: -4px 0 16px rgba(240,165,0,0.1);
-  }
-  .def-card:hover::before { background: #F0A500; }
-  .def-card.matched-ok {
-    border-color: #4ade80;
-    background: #0a2318;
-    pointer-events: none;
-  }
-  .def-card.matched-ok::before { background: #4ade80; }
-  .def-card.matched-fail {
-    border-color: #f87171;
-    background: #200a0a;
-    animation: shake 0.4s ease;
-  }
-  .def-card.matched-fail::before { background: #f87171; }
-  .def-card.used { opacity: 0.25; pointer-events: none; }
-  .def-text {
-    font-size: clamp(10px, 2.2vw, 12px);
-    color: #c8d8e8;
-    line-height: 1.45;
-  }
-  .def-example {
-    font-size: clamp(9px, 1.8vw, 11px);
-    color: #F0A500;
-    font-style: italic;
-    opacity: 0.8;
-  }
-  .def-card.matched-ok .def-text { color: #86efac; }
-  .def-card.matched-ok .def-example { color: #4ade80; }
+  /* gradiente de fondo único por forma de gobierno */
+  .c-card[data-idx="0"] .c-visual{background:linear-gradient(135deg,#1a1430,#2d1f5e);}
+  .c-card[data-idx="1"] .c-visual{background:linear-gradient(135deg,#0f2a1a,#1a4d2e);}
+  .c-card[data-idx="2"] .c-visual{background:linear-gradient(135deg,#2a0f0f,#4d1a1a);}
+  .c-card[data-idx="3"] .c-visual{background:linear-gradient(135deg,#1a1400,#3d2e00);}
+  .c-card[data-idx="4"] .c-visual{background:linear-gradient(135deg,#0f1e2a,#1a3a4d);}
 
-  /* ── FEEDBACK ── */
-  .feedback {
-    width: 100%;
-    max-width: 720px;
-    border-radius: 14px;
-    padding: clamp(10px, 2vw, 14px) 16px;
-    font-size: clamp(11px, 2.3vw, 13px);
-    line-height: 1.5;
-    display: none;
-    text-align: center;
-    border: 1px solid transparent;
-  }
-  .feedback.show   { display: block; }
-  .feedback.correct { background: #0a2318; color: #86efac; border-color: #166534; }
-  .feedback.wrong   { background: #200a0a; color: #fca5a5; border-color: #7f1d1d; }
-  .feedback.hint    { background: #1a1a00; color: #fde68a; border-color: #854d0e; }
+  /* texto en la visual — SVG decorativo */
+  .c-visual svg{opacity:.55;transition:opacity .2s;}
+  .c-card:hover .c-visual svg,.c-card.sel .c-visual svg{opacity:.85;}
+  .c-card.ok .c-visual svg{opacity:.4;}
 
-  /* ── RESULT ── */
-  .result-screen {
-    width: 100%;
-    max-width: 480px;
-    background: #0d1b2a;
-    border: 1px solid #1a2d42;
-    border-radius: 28px;
-    padding: clamp(28px, 6vw, 44px) clamp(20px, 5vw, 32px);
-    text-align: center;
-    display: none;
-    margin: auto;
+  .c-footer{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:clamp(7px,1.5vw,10px) clamp(10px,2vw,14px);
+    gap:8px;
   }
-  .result-screen.show { display: block; }
-  .result-emoji { font-size: clamp(44px, 11vw, 60px); margin-bottom: 12px; }
-  .result-big   { font-family: 'Syne', sans-serif; font-size: clamp(48px, 12vw, 64px); font-weight: 800; color: #F0A500; line-height: 1; }
-  .result-of    { font-size: clamp(11px, 2.5vw, 13px); color: #5a7a99; margin-bottom: 6px; }
-  .result-msg   { font-size: clamp(13px, 3vw, 15px); color: #c8d8e8; margin: 14px 0 20px; line-height: 1.6; }
-  .result-breakdown { display: flex; gap: 10px; justify-content: center; margin-bottom: 22px; flex-wrap: wrap; }
-  .rb-pill { padding: 7px clamp(14px, 3.5vw, 20px); border-radius: 50px; font-size: clamp(11px, 2.5vw, 13px); font-weight: 700; }
-  .rb-pill.c { background: #0a2318; color: #4ade80; border: 1px solid #166534; }
-  .rb-pill.w { background: #200a0a; color: #f87171; border: 1px solid #7f1d1d; }
-  .btn-restart {
-    padding: clamp(11px, 2.5vw, 14px) clamp(26px, 6vw, 36px);
-    border-radius: 14px; border: none;
-    background: #F0A500; color: #080f18;
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(13px, 3vw, 15px); font-weight: 700; cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    letter-spacing: 0.5px;
+  .c-name{
+    font-family:'Syne',sans-serif;
+    font-size:clamp(11px,2.4vw,14px);font-weight:700;
+    color:#e2eaf3;transition:color .2s;
   }
-  .btn-restart:hover { background: #e09500; transform: translateY(-1px); }
+  .c-card.sel  .c-name{color:#F0A500;}
+  .c-card.ok   .c-name{color:#4ade80;}
+  .c-card.err  .c-name{color:#f87171;}
+  .c-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#1a2d42;flex-shrink:0;transition:background .2s;
+  }
+  .c-card.sel .c-dot{background:#F0A500;}
+  .c-card.ok  .c-dot{background:#4ade80;}
 
-  /* ── FOOTER ── */
-  .footer {
-    background: #060d14;
-    border-top: 1px solid #1a2d42;
-    padding: 9px 20px;
-    text-align: center;
-    font-size: clamp(10px, 2vw, 12px);
-    color: #5a7a99;
-    flex-shrink: 0;
+  /* DEFINITION CARDS */
+  .d-card{
+    border-radius:16px;
+    border:2px solid #1a2d42;
+    padding:clamp(10px,2vw,14px) clamp(12px,2.5vw,16px) clamp(10px,2vw,14px) clamp(14px,3vw,18px);
+    margin-bottom:8px;cursor:pointer;
+    background:#0d1b2a;
+    transition:border-color .2s,transform .15s,box-shadow .2s;
+    position:relative;
+    min-height:clamp(56px,10vw,80px);
+    display:flex;flex-direction:column;justify-content:center;gap:4px;
   }
-  .footer strong { color: #F0A500; }
+  .d-card:last-child{margin-bottom:0;}
+  /* barra lateral izquierda */
+  .d-card::before{
+    content:'';position:absolute;left:0;top:12px;bottom:12px;
+    width:3px;border-radius:2px;background:#1a2d42;transition:background .2s;
+  }
+  .d-card:hover:not(.ok):not(.err):not(.used){
+    border-color:#F0A500;
+    transform:translateX(3px);
+    box-shadow:-3px 0 14px rgba(240,165,0,.12);
+  }
+  .d-card:hover::before{background:#F0A500;}
+  .d-card.ok{border-color:#4ade80;background:#091a10;pointer-events:none;}
+  .d-card.ok::before{background:#4ade80;}
+  .d-card.err{border-color:#f87171;background:#1a0909;animation:shake .38s ease;}
+  .d-card.err::before{background:#f87171;}
+  .d-card.used{opacity:.22;pointer-events:none;}
 
-  /* ── ANIMACIONES ── */
-  @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    20% { transform: translateX(-5px); }
-    40% { transform: translateX(5px); }
-    60% { transform: translateX(-4px); }
-    80% { transform: translateX(4px); }
+  .d-text{font-size:clamp(10px,2.1vw,12px);color:#b8c8d8;line-height:1.45;}
+  .d-ex{font-size:clamp(9px,1.8vw,11px);color:#F0A500;font-style:italic;opacity:.85;}
+  .d-card.ok .d-text{color:#86efac;}
+  .d-card.ok .d-ex{color:#4ade80;}
+
+  /* FEEDBACK */
+  .fb{
+    width:100%;max-width:700px;border-radius:14px;
+    padding:11px 16px;font-size:clamp(11px,2.2vw,13px);
+    line-height:1.5;display:none;text-align:center;
+    border:1px solid transparent;
   }
-  @keyframes popIn {
-    from { transform: scale(0.92); opacity: 0; }
-    to   { transform: scale(1);    opacity: 1; }
+  .fb.show{display:block;}
+  .fb.ok  {background:#091a10;color:#86efac;border-color:#166534;}
+  .fb.err {background:#1a0909;color:#fca5a5;border-color:#7f1d1d;}
+  .fb.hint{background:#1a1400;color:#fde68a;border-color:#854d0e;}
+
+  /* RESULT */
+  .result{
+    width:100%;max-width:460px;
+    background:#0d1b2a;border:1px solid #1a2d42;border-radius:28px;
+    padding:clamp(28px,6vw,44px) clamp(20px,5vw,32px);
+    text-align:center;display:none;margin:auto;
   }
-  .concept-card, .def-card { animation: popIn 0.3s ease both; }
+  .result.show{display:block;}
+  .r-emoji{font-size:clamp(44px,11vw,60px);margin-bottom:10px;}
+  .r-big{font-family:'Syne',sans-serif;font-size:clamp(52px,13vw,68px);font-weight:800;color:#F0A500;line-height:1;}
+  .r-of{font-size:clamp(11px,2.3vw,13px);color:#4a6a88;margin-bottom:4px;}
+  .r-msg{font-size:clamp(13px,2.8vw,15px);color:#c8d8e8;margin:14px 0 20px;line-height:1.6;}
+  .r-row{display:flex;gap:10px;justify-content:center;margin-bottom:22px;flex-wrap:wrap;}
+  .r-pill{padding:7px 18px;border-radius:50px;font-size:clamp(11px,2.4vw,13px);font-weight:600;}
+  .r-pill.c{background:#091a10;color:#4ade80;border:1px solid #166534;}
+  .r-pill.w{background:#1a0909;color:#f87171;border:1px solid #7f1d1d;}
+  .btn-r{
+    padding:12px 32px;border-radius:14px;border:none;
+    background:#F0A500;color:#080f18;
+    font-family:'Syne',sans-serif;font-size:clamp(13px,2.8vw,15px);font-weight:700;
+    cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;
+  }
+  .btn-r:hover{background:#e09500;transform:translateY(-1px);}
+
+  /* FOOTER */
+  .footer{
+    background:#060c13;border-top:1px solid #1a2d42;
+    padding:9px 20px;text-align:center;
+    font-size:clamp(10px,2vw,12px);color:#4a6a88;flex-shrink:0;
+  }
+  .footer strong{color:#F0A500;}
+
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-5px);}
+    50%{transform:translateX(5px);}
+    75%{transform:translateX(-4px);}
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(10px);}
+    to  {opacity:1;transform:translateY(0);}
+  }
+  .c-card,.d-card{animation:fadeUp .3s ease both;}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <img src="https://i.postimg.cc/FKz4sz2C/logoutelsinfondo.png" alt="Logo UTEL">
+  <img src="https://i.postimg.cc/FKz4sz2C/logoutelsinfondo.png" alt="UTEL">
   <div class="header-title">Análisis de la Información y la Opinión Pública</div>
   <div class="header-sub">Semana 5 · Poder Político</div>
 </div>
 
 <div class="content">
 
-  <div id="game-section" style="width:100%;max-width:720px;display:flex;flex-direction:column;gap:clamp(10px,2vw,16px);align-items:center;">
+  <div id="game" style="width:100%;max-width:700px;display:flex;flex-direction:column;gap:clamp(10px,2vw,14px);align-items:center;">
 
     <div class="score-strip">
-      <div class="score-pill hits"><span class="lbl">Correctas</span><span class="val" id="cnt-hits">0</span></div>
-      <div class="score-pill pts"><span class="lbl">Progreso</span><span class="val" id="cnt-pts">0/5</span></div>
-      <div class="score-pill miss"><span class="lbl">Incorrectas</span><span class="val" id="cnt-miss">0</span></div>
+      <div class="s-pill hits"><span class="lbl">Correctas</span><span class="val" id="c-hits">0</span></div>
+      <div class="s-pill pts" ><span class="lbl">Progreso</span><span class="val" id="c-pts">0/5</span></div>
+      <div class="s-pill miss"><span class="lbl">Incorrectas</span><span class="val" id="c-miss">0</span></div>
     </div>
 
-    <div class="instruccion">
-      Selecciona una <strong>Forma de Gobierno</strong> y luego su definición correspondiente
-    </div>
+    <p class="tip">Selecciona una <b>Forma de Gobierno</b> y luego su definición correcta</p>
 
     <div class="columns">
       <div>
-        <div class="col-label">⬡ Forma de Gobierno</div>
+        <div class="col-head">⬡ Forma de Gobierno</div>
         <div id="concepts"></div>
       </div>
       <div>
-        <div class="col-label">☰ Definición</div>
+        <div class="col-head">☰ Definición</div>
         <div id="defs"></div>
       </div>
     </div>
 
-    <div class="feedback" id="feedback"></div>
+    <div class="fb" id="fb"></div>
   </div>
 
-  <div class="result-screen" id="result-screen">
-    <div class="result-emoji" id="res-emoji"></div>
-    <div class="result-big" id="res-score"></div>
-    <div class="result-of">de 5 pares correctos</div>
-    <div class="result-msg" id="res-msg"></div>
-    <div class="result-breakdown">
-      <div class="rb-pill c" id="rb-c"></div>
-      <div class="rb-pill w" id="rb-w"></div>
+  <div class="result" id="result">
+    <div class="r-emoji" id="r-emoji"></div>
+    <div class="r-big"   id="r-score"></div>
+    <div class="r-of">de 5 pares correctos</div>
+    <div class="r-msg"   id="r-msg"></div>
+    <div class="r-row">
+      <div class="r-pill c" id="r-c"></div>
+      <div class="r-pill w" id="r-w"></div>
     </div>
-    <button class="btn-restart" onclick="restart()">↺ Jugar de nuevo</button>
+    <button class="btn-r" onclick="restart()">↺ Jugar de nuevo</button>
   </div>
 
 </div>
@@ -391,172 +300,151 @@
 </div>
 
 <script>
-const PAIRS = [
-  {
-    concept: "Monarquía",
-    img: "https://images.unsplash.com/photo-1529473814998-077b028f02d0?w=400&q=70&auto=format&fit=crop",
-    def: "El poder se hereda. Gobierna un rey o una reina como jefe del Estado.",
-    example: "Ej: El Reino de España"
-  },
-  {
-    concept: "República",
-    img: "https://images.unsplash.com/photo-1555938798-77e17e6a2bb3?w=400&q=70&auto=format&fit=crop",
-    def: "El poder no se hereda. El jefe de Estado es elegido por la población o sus representantes.",
-    example: "Ej: México"
-  },
-  {
-    concept: "Dictadura",
-    img: "https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=400&q=70&auto=format&fit=crop",
-    def: "El poder se concentra en una sola persona o grupo. No hay elecciones libres.",
-    example: "Ej: Corea del Norte, Cuba"
-  },
-  {
-    concept: "Aristocracia",
-    img: "https://images.unsplash.com/photo-1520986606214-8b456906c813?w=400&q=70&auto=format&fit=crop",
-    def: "El poder está en manos de un grupo reducido basado en nobleza, élites o privilegios sociales.",
-    example: "Ej: La Venecia medieval"
-  },
-  {
-    concept: "Democracia",
-    img: "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=400&q=70&auto=format&fit=crop",
-    def: "El poder reside en el pueblo. Los gobernantes son elegidos mediante elecciones libres.",
-    example: "Ej: Canadá, Alemania"
-  }
+/* SVG ilustraciones para cada forma de gobierno */
+const ICONS = [
+  /* Monarquía – corona */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 44 L16 22 L32 34 L48 22 L54 44 Z" stroke="#c084fc" stroke-width="2.5" fill="rgba(192,132,252,.15)" stroke-linejoin="round"/>
+    <circle cx="16" cy="22" r="4" fill="#c084fc" opacity=".8"/>
+    <circle cx="32" cy="16" r="4" fill="#c084fc" opacity=".8"/>
+    <circle cx="48" cy="22" r="4" fill="#c084fc" opacity=".8"/>
+    <rect x="10" y="44" width="44" height="5" rx="2.5" fill="#c084fc" opacity=".6"/>
+  </svg>`,
+  /* República – urna/voto */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="14" y="28" width="36" height="26" rx="4" stroke="#4ade80" stroke-width="2.5" fill="rgba(74,222,128,.1)"/>
+    <rect x="20" y="22" width="24" height="8" rx="3" stroke="#4ade80" stroke-width="2" fill="rgba(74,222,128,.15)"/>
+    <path d="M29 16 L35 16 L32 22 Z" fill="#4ade80" opacity=".7"/>
+    <path d="M27 38 L32 43 L40 34" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  /* Dictadura – puño */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="28" width="24" height="20" rx="5" stroke="#f87171" stroke-width="2.5" fill="rgba(248,113,113,.12)"/>
+    <rect x="22" y="20" width="6"  height="12" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
+    <rect x="29" y="18" width="6"  height="13" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
+    <rect x="36" y="20" width="6"  height="12" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
+    <path d="M20 36 L14 34 L14 38 L20 40" stroke="#f87171" stroke-width="2" fill="none"/>
+  </svg>`,
+  /* Aristocracia – columna/templo */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="12" y="48" width="40" height="4" rx="2" fill="#fbbf24" opacity=".7"/>
+    <rect x="16" y="16" width="32" height="4" rx="2" fill="#fbbf24" opacity=".7"/>
+    <rect x="20" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
+    <rect x="30" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
+    <rect x="40" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
+    <polygon points="16,16 32,8 48,16" fill="#fbbf24" opacity=".4"/>
+  </svg>`,
+  /* Democracia – personas/comunidad */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="32" cy="20" r="6"  stroke="#60a5fa" stroke-width="2.5" fill="rgba(96,165,250,.15)"/>
+    <circle cx="16" cy="38" r="5"  stroke="#60a5fa" stroke-width="2"   fill="rgba(96,165,250,.1)"/>
+    <circle cx="48" cy="38" r="5"  stroke="#60a5fa" stroke-width="2"   fill="rgba(96,165,250,.1)"/>
+    <path d="M22 44 Q16 44 14 52 L20 52" stroke="#60a5fa" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M42 44 Q48 44 50 52 L44 52" stroke="#60a5fa" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M26 28 Q20 28 18 36 L46 36 Q44 28 38 28 Q36 26 32 26 Q28 26 26 28Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,.1)"/>
+  </svg>`,
 ];
 
-let selectedConcept = null;
-let hits = 0, miss = 0;
+const PAIRS = [
+  { concept:"Monarquía",   icon:0, def:"El poder se hereda. Gobierna un rey o una reina como jefe del Estado.",                                        ex:"Ej: El Reino de España" },
+  { concept:"República",   icon:1, def:"El poder no se hereda. El jefe de Estado es elegido por la población o sus representantes.",                   ex:"Ej: México" },
+  { concept:"Dictadura",   icon:2, def:"El poder se concentra en una sola persona o grupo. No hay elecciones libres.",                                 ex:"Ej: Corea del Norte, Cuba" },
+  { concept:"Aristocracia",icon:3, def:"El poder está en manos de un grupo reducido basado en nobleza, élites o privilegios sociales.",                ex:"Ej: La Venecia medieval" },
+  { concept:"Democracia",  icon:4, def:"El poder reside en el pueblo. Los gobernantes son elegidos mediante elecciones libres.",                       ex:"Ej: Canadá, Alemania" },
+];
 
-function shuffle(a) {
-  const b = [...a];
-  for (let i = b.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [b[i], b[j]] = [b[j], b[i]];
-  }
-  return b;
+let sel=null, hits=0, miss=0;
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function restart(){
+  sel=null;hits=0;miss=0;
+  ['c-hits','c-miss'].forEach(id=>document.getElementById(id).textContent=0);
+  document.getElementById('c-pts').textContent='0/5';
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('game').style.display='';
+  hideFb();render();
 }
 
-function restart() {
-  selectedConcept = null; hits = 0; miss = 0;
-  document.getElementById('cnt-hits').textContent = 0;
-  document.getElementById('cnt-miss').textContent = 0;
-  document.getElementById('cnt-pts').textContent = '0/5';
-  document.getElementById('result-screen').classList.remove('show');
-  document.getElementById('game-section').style.display = '';
-  hideFeedback();
-  render();
-}
+function render(){
+  const sd=shuffle(PAIRS.map((p,i)=>({...p,idx:i})));
 
-function render() {
-  const shuffledDefs = shuffle(PAIRS.map((p, i) => ({ ...p, idx: i })));
-
-  // CONCEPTOS
-  const conceptsEl = document.getElementById('concepts');
-  conceptsEl.innerHTML = '';
-  PAIRS.forEach((p, i) => {
-    const div = document.createElement('div');
-    div.className = 'concept-card';
-    div.dataset.idx = i;
-    div.style.animationDelay = (i * 0.07) + 's';
-    div.innerHTML = `
-      <img class="concept-img" src="${p.img}" alt="${p.concept}" loading="lazy">
-      <div class="concept-body">
-        <span class="concept-name">${p.concept}</span>
-        <span class="concept-dot"></span>
-      </div>`;
-    div.onclick = () => selectConcept(i);
-    conceptsEl.appendChild(div);
+  const cEl=document.getElementById('concepts');
+  cEl.innerHTML='';
+  PAIRS.forEach((p,i)=>{
+    const d=document.createElement('div');
+    d.className='c-card';d.dataset.idx=i;
+    d.style.animationDelay=(i*.06)+'s';
+    d.innerHTML=`<div class="c-visual">${ICONS[p.icon]}</div>
+      <div class="c-footer"><span class="c-name">${p.concept}</span><span class="c-dot"></span></div>`;
+    d.onclick=()=>pickConcept(i);
+    cEl.appendChild(d);
   });
 
-  // DEFINICIONES
-  const defsEl = document.getElementById('defs');
-  defsEl.innerHTML = '';
-  shuffledDefs.forEach((p, si) => {
-    const div = document.createElement('div');
-    div.className = 'def-card';
-    div.dataset.idx = p.idx;
-    div.style.animationDelay = (si * 0.07) + 's';
-    div.innerHTML = `
-      <span class="def-text">${p.def}</span>
-      <span class="def-example">${p.example}</span>`;
-    div.onclick = () => selectDef(p.idx, div);
-    defsEl.appendChild(div);
+  const dEl=document.getElementById('defs');
+  dEl.innerHTML='';
+  sd.forEach((p,si)=>{
+    const d=document.createElement('div');
+    d.className='d-card';d.dataset.idx=p.idx;
+    d.style.animationDelay=(si*.06)+'s';
+    d.innerHTML=`<span class="d-text">${p.def}</span><span class="d-ex">${p.ex}</span>`;
+    d.onclick=()=>pickDef(p.idx,d);
+    dEl.appendChild(d);
   });
 }
 
-function selectConcept(idx) {
-  const cards = document.querySelectorAll('.concept-card');
-  if (cards[idx].classList.contains('matched-ok')) return;
-  cards.forEach(c => {
-    if (!c.classList.contains('matched-ok')) c.classList.remove('selected');
-  });
-  cards[idx].classList.add('selected');
-  selectedConcept = idx;
-  hideFeedback();
+function pickConcept(idx){
+  const cards=document.querySelectorAll('.c-card');
+  if(cards[idx].classList.contains('ok'))return;
+  cards.forEach(c=>{if(!c.classList.contains('ok'))c.classList.remove('sel');});
+  cards[idx].classList.add('sel');
+  sel=idx;hideFb();
 }
 
-function selectDef(idx, defEl) {
-  if (selectedConcept === null) {
-    showFeedback('👆 Primero selecciona una Forma de Gobierno en la columna izquierda.', 'hint');
-    return;
-  }
-  if (defEl.classList.contains('matched-ok')) return;
-
-  const conceptCards = document.querySelectorAll('.concept-card');
-  const correct = (selectedConcept === idx);
-
-  if (correct) {
+function pickDef(idx,el){
+  if(sel===null){showFb('👆 Primero selecciona una Forma de Gobierno a la izquierda.','hint');return;}
+  if(el.classList.contains('ok'))return;
+  const cc=document.querySelectorAll('.c-card');
+  if(sel===idx){
     hits++;
-    document.getElementById('cnt-hits').textContent = hits;
-    document.getElementById('cnt-pts').textContent = hits + '/5';
-    conceptCards[selectedConcept].classList.remove('selected');
-    conceptCards[selectedConcept].classList.add('matched-ok');
-    defEl.classList.add('matched-ok');
-    showFeedback('✓ ¡Correcto! ' + PAIRS[idx].concept + ': ' + PAIRS[idx].def, 'correct');
-    selectedConcept = null;
-    if (hits === PAIRS.length) setTimeout(showResult, 900);
-  } else {
+    document.getElementById('c-hits').textContent=hits;
+    document.getElementById('c-pts').textContent=hits+'/5';
+    cc[sel].classList.remove('sel');cc[sel].classList.add('ok');
+    el.classList.add('ok');
+    showFb('✓ ¡Correcto! '+PAIRS[idx].concept+': '+PAIRS[idx].def,'ok');
+    sel=null;
+    if(hits===PAIRS.length)setTimeout(showResult,900);
+  }else{
     miss++;
-    document.getElementById('cnt-miss').textContent = miss;
-    conceptCards[selectedConcept].classList.remove('selected');
-    conceptCards[selectedConcept].classList.add('matched-fail');
-    defEl.classList.add('matched-fail');
-    showFeedback('✗ Incorrecto. ' + PAIRS[selectedConcept].concept + ' no corresponde a esa definición. Inténtalo de nuevo.', 'wrong');
-    const sc = selectedConcept;
-    setTimeout(() => {
-      conceptCards[sc].classList.remove('matched-fail', 'selected');
-      defEl.classList.remove('matched-fail');
-    }, 1200);
-    selectedConcept = null;
+    document.getElementById('c-miss').textContent=miss;
+    cc[sel].classList.remove('sel');cc[sel].classList.add('err');
+    el.classList.add('err');
+    showFb('✗ Incorrecto. '+PAIRS[sel].concept+' no corresponde a esa definición. Inténtalo de nuevo.','err');
+    const s=sel;
+    setTimeout(()=>{cc[s].classList.remove('err','sel');el.classList.remove('err');},1200);
+    sel=null;
   }
 }
 
-function showFeedback(msg, type) {
-  const fb = document.getElementById('feedback');
-  fb.textContent = msg;
-  fb.className = 'feedback show ' + type;
-}
-function hideFeedback() {
-  document.getElementById('feedback').className = 'feedback';
-}
+function showFb(msg,type){const f=document.getElementById('fb');f.textContent=msg;f.className='fb show '+type;}
+function hideFb(){document.getElementById('fb').className='fb';}
 
-function showResult() {
-  document.getElementById('game-section').style.display = 'none';
-  document.getElementById('result-screen').classList.add('show');
-  document.getElementById('res-score').textContent = hits;
-  document.getElementById('rb-c').textContent = '✔ ' + hits + ' correctas';
-  document.getElementById('rb-w').textContent = '✘ ' + miss + ' incorrectas';
-  const data = [
-    { e: '😟', m: 'No te rindas, repasa las formas de gobierno y vuelve a intentarlo.' },
-    { e: '🤔', m: 'Vas bien, algunos conceptos aún necesitan repaso.' },
-    { e: '😊', m: 'Buen trabajo, ya tienes un manejo sólido del tema.' },
-    { e: '🏆', m: '¡Excelente! Dominaste completamente las Formas de Gobierno.' },
+function showResult(){
+  document.getElementById('game').style.display='none';
+  document.getElementById('result').classList.add('show');
+  document.getElementById('r-score').textContent=hits;
+  document.getElementById('r-c').textContent='✔ '+hits+' correctas';
+  document.getElementById('r-w').textContent='✘ '+miss+' incorrectas';
+  const d=[
+    {e:'😟',m:'No te rindas, repasa las formas de gobierno e inténtalo de nuevo.'},
+    {e:'🤔',m:'Vas bien, algunos conceptos aún necesitan repaso.'},
+    {e:'😊',m:'Buen trabajo, ya tienes un manejo sólido del tema.'},
+    {e:'🏆',m:'¡Excelente! Dominaste completamente las Formas de Gobierno.'},
   ];
-  const d = hits <= 1 ? data[0] : hits <= 3 ? data[1] : hits <= 4 ? data[2] : data[3];
-  document.getElementById('res-emoji').textContent = d.e;
-  document.getElementById('res-msg').textContent = d.m;
+  const r=hits<=1?d[0]:hits<=3?d[1]:hits<=4?d[2]:d[3];
+  document.getElementById('r-emoji').textContent=r.e;
+  document.getElementById('r-msg').textContent=r.m;
 }
-
 restart();
 </script>
 </body>
