@@ -1,250 +1,319 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Relacionar Columnas – Semana 5</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Constructor de Estado – Semana 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  height:100%;
+  font-family:'Inter',sans-serif;
+  background:#080f18;
+  color:#e2eaf3;
+}
+body{
+  min-height:100dvh;
+  display:flex;flex-direction:column;
+  overflow-x:hidden;
+}
 
-  html,body{
-    height:100%;
-    font-family:'Inter',sans-serif;
-    background:#080f18;
-    color:#e2eaf3;
-  }
-  body{
-    min-height:100dvh;
-    display:flex;
-    flex-direction:column;
-    overflow-x:hidden;
-  }
+/* ── HEADER ── */
+.header{
+  background:#0b141f;
+  border-bottom:2px solid #F0A500;
+  padding:10px 16px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;
+}
+.header img{height:30px;object-fit:contain;}
+.header-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(10px,3vw,14px);font-weight:800;
+  color:#F0A500;text-transform:uppercase;letter-spacing:1px;text-align:center;
+}
+.header-sub{font-size:clamp(9px,2.5vw,11px);color:#4a6a88;text-align:center;}
 
-  /* HEADER */
-  .header{
-    background:#0b141f;
-    border-bottom:2px solid #F0A500;
-    padding:10px 20px 12px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
-    flex-shrink:0;
-  }
-  .header img{height:32px;object-fit:contain;}
-  .header-title{
-    font-family:'Syne',sans-serif;
-    font-size:clamp(11px,2.4vw,14px);
-    font-weight:800;
-    color:#F0A500;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    text-align:center;
-  }
-  .header-sub{font-size:clamp(9px,1.8vw,11px);color:#4a6a88;text-align:center;letter-spacing:.3px;}
+/* ── CONTENT ── */
+.content{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:12px 12px 16px;gap:10px;
+  width:100%;max-width:680px;margin:0 auto;
+}
 
-  /* CONTENT */
-  .content{
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:clamp(14px,3vw,28px) clamp(14px,3vw,24px) clamp(10px,2vw,20px);
-    gap:clamp(10px,2vw,16px);
-  }
+/* ── PROGRESS ── */
+.progress-wrap{
+  width:100%;background:#0d1b2a;border-radius:12px;
+  padding:9px 14px;display:flex;align-items:center;gap:10px;
+}
+.progress-label{font-size:11px;color:#4a6a88;white-space:nowrap;}
+.progress-track{flex:1;height:6px;background:#1a2d42;border-radius:3px;overflow:hidden;}
+.progress-fill{
+  height:100%;background:linear-gradient(90deg,#F0A500,#ffe066);
+  border-radius:3px;transition:width .5s ease;width:0%;
+}
+.progress-steps{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  color:#F0A500;white-space:nowrap;
+}
 
-  /* SCORE */
-  .score-strip{display:flex;gap:10px;width:100%;max-width:700px;}
-  .s-pill{
-    flex:1;background:#0d1b2a;border-radius:14px;
-    padding:8px 10px;display:flex;flex-direction:column;
-    align-items:center;gap:1px;
-    border-top:3px solid transparent;
-  }
-  .s-pill.hits{border-color:#4ade80;}
-  .s-pill.pts {border-color:#F0A500;}
-  .s-pill.miss{border-color:#f87171;}
-  .s-pill .lbl{font-size:clamp(8px,1.8vw,10px);color:#4a6a88;text-transform:uppercase;letter-spacing:.5px;}
-  .s-pill .val{font-family:'Syne',sans-serif;font-size:clamp(17px,4vw,24px);font-weight:800;}
-  .s-pill.hits .val{color:#4ade80;}
-  .s-pill.pts  .val{color:#F0A500;}
-  .s-pill.miss .val{color:#f87171;}
+/* ── SCENARIO ── */
+.scenario-card{
+  width:100%;background:#0d1b2a;border:1px solid #1a2d42;border-radius:16px;
+  padding:14px;position:relative;overflow:hidden;
+}
+.scenario-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#F0A500,#ffe066);
+}
+.sc-badge{
+  display:inline-block;font-size:10px;font-weight:600;
+  background:#1a2d42;color:#4a6a88;
+  padding:3px 10px;border-radius:20px;letter-spacing:.5px;
+  text-transform:uppercase;margin-bottom:6px;
+}
+.sc-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(14px,4vw,18px);font-weight:800;color:#e2eaf3;margin-bottom:5px;
+}
+.sc-desc{font-size:clamp(11px,3vw,13px);color:#7a9ab8;line-height:1.55;}
 
-  /* INSTRUCCION */
-  .tip{font-size:clamp(11px,2.2vw,13px);color:#4a6a88;text-align:center;}
-  .tip b{color:#F0A500;}
+/* ── NATION STATUS ── */
+.nation-header{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;
+  background:#060c13;border:1px solid #1a2d42;border-radius:14px;padding:10px 14px;
+}
+.nation-name{
+  font-family:'Syne',sans-serif;font-size:clamp(13px,3.5vw,16px);
+  font-weight:800;color:#e2eaf3;display:flex;align-items:center;gap:8px;
+}
+.nation-icon{font-size:clamp(22px,6vw,28px);}
+.state-status{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:50px;
+  font-size:clamp(10px,2.5vw,12px);font-weight:600;
+  border:1px solid #1a2d42;background:#0d1b2a;color:#2a4a62;
+  white-space:nowrap;transition:all .4s;
+}
+.state-status.partial{border-color:#F0A500;color:#F0A500;background:#1a1400;}
+.state-status.complete{border-color:#4ade80;color:#4ade80;background:#091a10;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;}
 
-  /* GRID */
-  .columns{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:clamp(10px,2vw,18px);
-    width:100%;max-width:700px;
-    align-items:start;
-  }
+/* ── SLOT GRID (2×2) ── */
+.slots-section{width:100%;}
+.slots-title{
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  color:#4a6a88;text-transform:uppercase;letter-spacing:1px;
+  text-align:center;margin-bottom:8px;
+}
+.slots-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;width:100%;
+}
+.slot-card{
+  background:#0d1b2a;border:2px dashed #1a2d42;border-radius:16px;
+  padding:12px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;text-align:center;min-height:80px;justify-content:center;
+  transition:all .25s;
+  -webkit-tap-highlight-color:transparent;
+}
+.slot-card:active{transform:scale(.97);}
+.slot-card.active{
+  border-color:#F0A500;border-style:dashed;background:#0f1600;
+  box-shadow:0 0 0 3px rgba(240,165,0,.15);
+  animation:pulse-slot 1.5s ease-in-out infinite;
+}
+.slot-card.filled{
+  border-style:solid;border-color:#4ade80;
+  background:#091a10;box-shadow:0 0 10px rgba(74,222,128,.1);
+  animation:none;cursor:default;
+}
+.slot-card.wrong{
+  border-color:#f87171;background:#1a0909;
+  animation:shake .38s ease;
+}
+.slot-icon{font-size:clamp(22px,6vw,28px);}
+.slot-label{
+  font-family:'Syne',sans-serif;font-size:clamp(9px,2.5vw,11px);font-weight:700;
+  color:#4a6a88;text-transform:uppercase;letter-spacing:.5px;line-height:1.2;
+}
+.slot-card.active  .slot-label{color:#F0A500;}
+.slot-card.filled  .slot-label{color:#4ade80;}
+.slot-check{
+  font-size:10px;color:#4ade80;display:none;font-weight:600;
+}
+.slot-card.filled .slot-check{display:block;}
 
-  .col-head{
-    font-family:'Syne',sans-serif;
-    font-size:clamp(9px,1.8vw,11px);font-weight:700;
-    color:#4a6a88;text-transform:uppercase;letter-spacing:1px;
-    text-align:center;margin-bottom:8px;
-  }
+/* ── INSTRUCTION ── */
+.hint-pill{
+  width:100%;font-size:clamp(11px,3vw,13px);color:#4a6a88;text-align:center;
+  background:#0d1b2a;padding:8px 14px;border-radius:50px;border:1px solid #1a2d42;
+}
+.hint-pill b{color:#F0A500;}
 
-  /* CONCEPT CARDS */
-  .c-card{
-    border-radius:18px;
-    border:2px solid #1a2d42;
-    overflow:hidden;
-    cursor:pointer;
-    margin-bottom:8px;
-    transition:border-color .2s,box-shadow .2s,transform .15s;
-    background:#0d1b2a;
-    position:relative;
-  }
-  .c-card:last-child{margin-bottom:0;}
-  .c-card:hover:not(.ok):not(.err){
-    border-color:#F0A500;
-    transform:translateY(-2px);
-    box-shadow:0 6px 20px rgba(240,165,0,.18);
-  }
-  .c-card.sel{
-    border-color:#F0A500;
-    box-shadow:0 0 0 3px rgba(240,165,0,.22);
-    transform:translateY(-2px);
-  }
-  .c-card.ok{border-color:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.15);pointer-events:none;}
-  .c-card.err{border-color:#f87171;animation:shake .38s ease;}
+/* ── RACK ── */
+.rack-title{
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  color:#4a6a88;text-transform:uppercase;letter-spacing:1px;text-align:center;
+}
+.rack{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;width:100%;
+}
+@media(max-width:360px){
+  .rack{grid-template-columns:repeat(2,1fr);}
+}
+.elem-card{
+  background:#0d1b2a;border:2px solid #1a2d42;border-radius:14px;
+  padding:10px 6px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  transition:all .2s;text-align:center;
+  -webkit-tap-highlight-color:transparent;
+  animation:fadeUp .3s ease both;
+}
+.elem-card:nth-child(1){animation-delay:.05s;}
+.elem-card:nth-child(2){animation-delay:.10s;}
+.elem-card:nth-child(3){animation-delay:.15s;}
+.elem-card:nth-child(4){animation-delay:.20s;}
+.elem-card:active:not(.used){transform:scale(.95);}
+.elem-card.selected{
+  border-color:#F0A500;background:#1a1400;
+  box-shadow:0 0 0 3px rgba(240,165,0,.2);
+}
+.elem-card.used{opacity:.2;cursor:default;pointer-events:none;}
+.elem-card.wrong-anim{animation:shake .38s ease;}
+.elem-icon{font-size:clamp(22px,6vw,28px);}
+.elem-name{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(8px,2.2vw,10px);font-weight:700;
+  color:#e2eaf3;text-transform:uppercase;letter-spacing:.4px;line-height:1.2;
+}
+.elem-card.selected .elem-name{color:#F0A500;}
 
-  /* imagen decorativa dentro de la card — SVG inline por tema */
-  .c-visual{
-    height:clamp(52px,9vw,78px);
-    display:flex;align-items:center;justify-content:center;
-    font-size:clamp(28px,6vw,46px);
-    position:relative;overflow:hidden;
-  }
-  /* gradiente de fondo único por forma de gobierno */
-  .c-card[data-idx="0"] .c-visual{background:linear-gradient(135deg,#1a1430,#2d1f5e);}
-  .c-card[data-idx="1"] .c-visual{background:linear-gradient(135deg,#0f2a1a,#1a4d2e);}
-  .c-card[data-idx="2"] .c-visual{background:linear-gradient(135deg,#2a0f0f,#4d1a1a);}
-  .c-card[data-idx="3"] .c-visual{background:linear-gradient(135deg,#1a1400,#3d2e00);}
-  .c-card[data-idx="4"] .c-visual{background:linear-gradient(135deg,#0f1e2a,#1a3a4d);}
+/* ── FEEDBACK ── */
+.fb{
+  width:100%;border-radius:12px;
+  padding:10px 14px;font-size:clamp(11px,3vw,13px);
+  line-height:1.5;display:none;text-align:center;
+  border:1px solid transparent;
+}
+.fb.show{display:block;animation:fadeUp .25s ease;}
+.fb.ok  {background:#091a10;color:#86efac;border-color:#166534;}
+.fb.err {background:#1a0909;color:#fca5a5;border-color:#7f1d1d;}
+.fb.hint{background:#1a1400;color:#fde68a;border-color:#854d0e;}
+.fb.info{background:#0a1520;color:#93c5fd;border-color:#1e3a5f;}
 
-  /* texto en la visual — SVG decorativo */
-  .c-visual svg{opacity:.55;transition:opacity .2s;}
-  .c-card:hover .c-visual svg,.c-card.sel .c-visual svg{opacity:.85;}
-  .c-card.ok .c-visual svg{opacity:.4;}
+/* ── DEFINITION PANEL ── */
+.def-panel{
+  width:100%;background:#0a1520;border:1px solid #1a2d42;border-radius:16px;
+  padding:14px;display:none;
+}
+.def-panel.show{display:block;animation:fadeUp .3s ease;}
+.def-panel-title{
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  color:#F0A500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;
+}
+.def-grid{display:flex;flex-direction:column;gap:8px;}
+.def-item{
+  background:#0d1b2a;border-radius:10px;padding:10px 12px;
+  border-left:3px solid #1a2d42;
+}
+.def-item-name{
+  font-family:'Syne',sans-serif;font-size:clamp(10px,2.8vw,12px);font-weight:700;
+  margin-bottom:3px;display:flex;align-items:center;gap:6px;
+}
+.def-item-text{font-size:clamp(10px,2.6vw,12px);color:#7a9ab8;line-height:1.5;}
+.btn-next{
+  display:block;width:100%;padding:12px;border-radius:12px;border:none;
+  background:#F0A500;color:#080f18;
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;margin-top:12px;transition:background .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-next:active{background:#e09500;}
 
-  .c-footer{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:clamp(7px,1.5vw,10px) clamp(10px,2vw,14px);
-    gap:8px;
-  }
-  .c-name{
-    font-family:'Syne',sans-serif;
-    font-size:clamp(11px,2.4vw,14px);font-weight:700;
-    color:#e2eaf3;transition:color .2s;
-  }
-  .c-card.sel  .c-name{color:#F0A500;}
-  .c-card.ok   .c-name{color:#4ade80;}
-  .c-card.err  .c-name{color:#f87171;}
-  .c-dot{
-    width:7px;height:7px;border-radius:50%;
-    background:#1a2d42;flex-shrink:0;transition:background .2s;
-  }
-  .c-card.sel .c-dot{background:#F0A500;}
-  .c-card.ok  .c-dot{background:#4ade80;}
+/* ── COLLAPSE OVERLAY ── */
+.collapse-overlay{
+  display:none;position:fixed;inset:0;background:rgba(4,8,12,.88);
+  z-index:200;align-items:center;justify-content:center;
+  padding:16px;
+}
+.collapse-overlay.show{display:flex;animation:fadeIn .3s ease;}
+.collapse-box{
+  background:#0d1b2a;border:2px solid #f87171;border-radius:20px;
+  padding:24px 20px;text-align:center;max-width:340px;width:100%;
+  animation:popIn .35s cubic-bezier(.34,1.56,.64,1);
+}
+.collapse-box .ce{font-size:52px;margin-bottom:8px;}
+.collapse-box h2{
+  font-family:'Syne',sans-serif;font-size:clamp(17px,5vw,22px);font-weight:800;
+  color:#f87171;margin-bottom:10px;
+}
+.collapse-box p{font-size:clamp(12px,3.2vw,14px);color:#c8d8e8;line-height:1.6;margin-bottom:16px;}
+.collapse-btn{
+  display:block;width:100%;padding:12px;border-radius:12px;border:none;
+  background:#F0A500;color:#080f18;
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;margin-bottom:8px;
+  -webkit-tap-highlight-color:transparent;
+}
+.collapse-btn:active{background:#e09500;}
+.collapse-btn.sec{background:#1a2d42;color:#e2eaf3;}
+.collapse-btn.sec:active{background:#243d55;}
 
-  /* DEFINITION CARDS */
-  .d-card{
-    border-radius:16px;
-    border:2px solid #1a2d42;
-    padding:clamp(10px,2vw,14px) clamp(12px,2.5vw,16px) clamp(10px,2vw,14px) clamp(14px,3vw,18px);
-    margin-bottom:8px;cursor:pointer;
-    background:#0d1b2a;
-    transition:border-color .2s,transform .15s,box-shadow .2s;
-    position:relative;
-    min-height:clamp(56px,10vw,80px);
-    display:flex;flex-direction:column;justify-content:center;gap:4px;
-  }
-  .d-card:last-child{margin-bottom:0;}
-  /* barra lateral izquierda */
-  .d-card::before{
-    content:'';position:absolute;left:0;top:12px;bottom:12px;
-    width:3px;border-radius:2px;background:#1a2d42;transition:background .2s;
-  }
-  .d-card:hover:not(.ok):not(.err):not(.used){
-    border-color:#F0A500;
-    transform:translateX(3px);
-    box-shadow:-3px 0 14px rgba(240,165,0,.12);
-  }
-  .d-card:hover::before{background:#F0A500;}
-  .d-card.ok{border-color:#4ade80;background:#091a10;pointer-events:none;}
-  .d-card.ok::before{background:#4ade80;}
-  .d-card.err{border-color:#f87171;background:#1a0909;animation:shake .38s ease;}
-  .d-card.err::before{background:#f87171;}
-  .d-card.used{opacity:.22;pointer-events:none;}
+/* ── RESULT ── */
+.result{
+  width:100%;background:#0d1b2a;border:1px solid #1a2d42;border-radius:24px;
+  padding:clamp(24px,6vw,40px) clamp(16px,5vw,28px);
+  text-align:center;display:none;
+}
+.result.show{display:block;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+.r-emoji{font-size:clamp(44px,12vw,60px);margin-bottom:8px;}
+.r-big{
+  font-family:'Syne',sans-serif;font-size:clamp(18px,5vw,24px);
+  font-weight:800;color:#F0A500;margin-bottom:4px;
+}
+.r-sub{font-size:12px;color:#4a6a88;margin-bottom:12px;}
+.r-msg{font-size:clamp(12px,3.2vw,14px);color:#c8d8e8;line-height:1.6;margin-bottom:18px;}
+.r-stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+.r-pill{padding:6px 14px;border-radius:50px;font-size:clamp(11px,3vw,13px);font-weight:600;}
+.r-pill.c{background:#091a10;color:#4ade80;border:1px solid #166534;}
+.r-pill.w{background:#1a0909;color:#f87171;border:1px solid #7f1d1d;}
+.btn-r{
+  display:block;width:100%;padding:13px;border-radius:14px;border:none;
+  background:#F0A500;color:#080f18;
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.btn-r:active{background:#e09500;}
 
-  .d-text{font-size:clamp(10px,2.1vw,12px);color:#b8c8d8;line-height:1.45;}
-  .d-ex{font-size:clamp(9px,1.8vw,11px);color:#F0A500;font-style:italic;opacity:.85;}
-  .d-card.ok .d-text{color:#86efac;}
-  .d-card.ok .d-ex{color:#4ade80;}
+/* ── FOOTER ── */
+.footer{
+  background:#060c13;border-top:1px solid #1a2d42;
+  padding:9px 16px;text-align:center;
+  font-size:clamp(10px,2.5vw,12px);color:#4a6a88;flex-shrink:0;
+}
+.footer strong{color:#F0A500;}
 
-  /* FEEDBACK */
-  .fb{
-    width:100%;max-width:700px;border-radius:14px;
-    padding:11px 16px;font-size:clamp(11px,2.2vw,13px);
-    line-height:1.5;display:none;text-align:center;
-    border:1px solid transparent;
-  }
-  .fb.show{display:block;}
-  .fb.ok  {background:#091a10;color:#86efac;border-color:#166534;}
-  .fb.err {background:#1a0909;color:#fca5a5;border-color:#7f1d1d;}
-  .fb.hint{background:#1a1400;color:#fde68a;border-color:#854d0e;}
-
-  /* RESULT */
-  .result{
-    width:100%;max-width:460px;
-    background:#0d1b2a;border:1px solid #1a2d42;border-radius:28px;
-    padding:clamp(28px,6vw,44px) clamp(20px,5vw,32px);
-    text-align:center;display:none;margin:auto;
-  }
-  .result.show{display:block;}
-  .r-emoji{font-size:clamp(44px,11vw,60px);margin-bottom:10px;}
-  .r-big{font-family:'Syne',sans-serif;font-size:clamp(52px,13vw,68px);font-weight:800;color:#F0A500;line-height:1;}
-  .r-of{font-size:clamp(11px,2.3vw,13px);color:#4a6a88;margin-bottom:4px;}
-  .r-msg{font-size:clamp(13px,2.8vw,15px);color:#c8d8e8;margin:14px 0 20px;line-height:1.6;}
-  .r-row{display:flex;gap:10px;justify-content:center;margin-bottom:22px;flex-wrap:wrap;}
-  .r-pill{padding:7px 18px;border-radius:50px;font-size:clamp(11px,2.4vw,13px);font-weight:600;}
-  .r-pill.c{background:#091a10;color:#4ade80;border:1px solid #166534;}
-  .r-pill.w{background:#1a0909;color:#f87171;border:1px solid #7f1d1d;}
-  .btn-r{
-    padding:12px 32px;border-radius:14px;border:none;
-    background:#F0A500;color:#080f18;
-    font-family:'Syne',sans-serif;font-size:clamp(13px,2.8vw,15px);font-weight:700;
-    cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;
-  }
-  .btn-r:hover{background:#e09500;transform:translateY(-1px);}
-
-  /* FOOTER */
-  .footer{
-    background:#060c13;border-top:1px solid #1a2d42;
-    padding:9px 20px;text-align:center;
-    font-size:clamp(10px,2vw,12px);color:#4a6a88;flex-shrink:0;
-  }
-  .footer strong{color:#F0A500;}
-
-  @keyframes shake{
-    0%,100%{transform:translateX(0);}
-    25%{transform:translateX(-5px);}
-    50%{transform:translateX(5px);}
-    75%{transform:translateX(-4px);}
-  }
-  @keyframes fadeUp{
-    from{opacity:0;transform:translateY(10px);}
-    to  {opacity:1;transform:translateY(0);}
-  }
-  .c-card,.d-card{animation:fadeUp .3s ease both;}
+/* ── ANIMATIONS ── */
+@keyframes shake{
+  0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}
+  50%{transform:translateX(5px);}75%{transform:translateX(-4px);}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}
+}
+@keyframes pulse-slot{
+  0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,.0);}
+  50%{box-shadow:0 0 0 5px rgba(240,165,0,.18);}
+}
 </style>
 </head>
 <body>
@@ -252,47 +321,106 @@
 <div class="header">
   <img src="https://i.postimg.cc/FKz4sz2C/logoutelsinfondo.png" alt="UTEL">
   <div class="header-title">Análisis de la Información y la Opinión Pública</div>
-  <div class="header-sub">Semana 5 · Poder Político</div>
+  <div class="header-sub">Semana 5 · Poder Político — Elementos del Estado</div>
 </div>
 
 <div class="content">
 
-  <div id="game" style="width:100%;max-width:700px;display:flex;flex-direction:column;gap:clamp(10px,2vw,14px);align-items:center;">
-
-    <div class="score-strip">
-      <div class="s-pill hits"><span class="lbl">Correctas</span><span class="val" id="c-hits">0</span></div>
-      <div class="s-pill pts" ><span class="lbl">Progreso</span><span class="val" id="c-pts">0/5</span></div>
-      <div class="s-pill miss"><span class="lbl">Incorrectas</span><span class="val" id="c-miss">0</span></div>
-    </div>
-
-    <p class="tip">Selecciona una <b>Forma de Gobierno</b> y luego su definición correcta</p>
-
-    <div class="columns">
-      <div>
-        <div class="col-head">⬡ Forma de Gobierno</div>
-        <div id="concepts"></div>
-      </div>
-      <div>
-        <div class="col-head">☰ Definición</div>
-        <div id="defs"></div>
-      </div>
-    </div>
-
-    <div class="fb" id="fb"></div>
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap">
+    <span class="progress-label">Avance</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-steps" id="progressSteps">0 / 3</span>
   </div>
 
+  <!-- SCENARIO -->
+  <div class="scenario-card" id="scenarioCard">
+    <span class="sc-badge" id="scBadge">Escenario 1</span>
+    <div class="sc-title"  id="scTitle">Cargando…</div>
+    <div class="sc-desc"   id="scDesc"></div>
+  </div>
+
+  <!-- NATION STATUS BAR -->
+  <div class="nation-header" id="nationHeader">
+    <div class="nation-name">
+      <span class="nation-icon" id="nationIcon">🏳️</span>
+      <span id="nationName">—</span>
+    </div>
+    <div class="state-status" id="stateStatus">
+      <div class="status-dot"></div>
+      <span id="statusText">0 / 4</span>
+    </div>
+  </div>
+
+  <!-- SLOTS 2×2 -->
+  <div class="slots-section" id="slotsSection">
+    <div class="slots-title">📍 Coloca los elementos en el Estado</div>
+    <div class="slots-grid" id="slotsGrid">
+      <div class="slot-card" id="slot-poblacion"  data-key="poblacion"  onclick="placeElement('poblacion')">
+        <div class="slot-icon">👥</div>
+        <div class="slot-label">Población</div>
+        <div class="slot-check">✓ Colocado</div>
+      </div>
+      <div class="slot-card" id="slot-territorio" data-key="territorio" onclick="placeElement('territorio')">
+        <div class="slot-icon">🗺️</div>
+        <div class="slot-label">Territorio</div>
+        <div class="slot-check">✓ Colocado</div>
+      </div>
+      <div class="slot-card" id="slot-gobierno"   data-key="gobierno"   onclick="placeElement('gobierno')">
+        <div class="slot-icon">🏛️</div>
+        <div class="slot-label">Gobierno</div>
+        <div class="slot-check">✓ Colocado</div>
+      </div>
+      <div class="slot-card" id="slot-soberania"  data-key="soberania"  onclick="placeElement('soberania')">
+        <div class="slot-icon">🛡️</div>
+        <div class="slot-label">Soberanía</div>
+        <div class="slot-check">✓ Colocado</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HINT -->
+  <div class="hint-pill" id="hintPill">
+    1️⃣ Selecciona un <b>elemento</b> abajo &nbsp;→&nbsp; 2️⃣ Toca el <b>slot</b> donde va
+  </div>
+
+  <!-- RACK -->
+  <div class="rack-title">⬡ Elementos disponibles</div>
+  <div class="rack" id="rack"></div>
+
+  <!-- FEEDBACK -->
+  <div class="fb" id="fb"></div>
+
+  <!-- DEFINITION PANEL -->
+  <div class="def-panel" id="defPanel">
+    <div class="def-panel-title">📚 Conceptos de este escenario</div>
+    <div class="def-grid" id="defGrid"></div>
+  </div>
+
+  <!-- RESULT -->
   <div class="result" id="result">
-    <div class="r-emoji" id="r-emoji"></div>
-    <div class="r-big"   id="r-score"></div>
-    <div class="r-of">de 5 pares correctos</div>
-    <div class="r-msg"   id="r-msg"></div>
-    <div class="r-row">
-      <div class="r-pill c" id="r-c"></div>
-      <div class="r-pill w" id="r-w"></div>
+    <div class="r-emoji" id="rEmoji"></div>
+    <div class="r-big"   id="rBig"></div>
+    <div class="r-sub">Elementos del Estado</div>
+    <div class="r-msg"   id="rMsg"></div>
+    <div class="r-stats">
+      <div class="r-pill c" id="rC"></div>
+      <div class="r-pill w" id="rW"></div>
     </div>
-    <button class="btn-r" onclick="restart()">↺ Jugar de nuevo</button>
+    <button class="btn-r" onclick="restartAll()">↺ Jugar de nuevo</button>
   </div>
 
+</div><!-- /content -->
+
+<!-- COLLAPSE OVERLAY -->
+<div class="collapse-overlay" id="collapseOverlay">
+  <div class="collapse-box">
+    <div class="ce">💥</div>
+    <h2>¡El Estado colapsó!</h2>
+    <p id="collapseMsg"></p>
+    <button class="collapse-btn" onclick="closeCollapse()">↩ Corregir</button>
+    <button class="collapse-btn sec" onclick="skipScenario()">→ Siguiente escenario</button>
+  </div>
 </div>
 
 <div class="footer">
@@ -300,152 +428,236 @@
 </div>
 
 <script>
-/* SVG ilustraciones para cada forma de gobierno */
-const ICONS = [
-  /* Monarquía – corona */
-  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 44 L16 22 L32 34 L48 22 L54 44 Z" stroke="#c084fc" stroke-width="2.5" fill="rgba(192,132,252,.15)" stroke-linejoin="round"/>
-    <circle cx="16" cy="22" r="4" fill="#c084fc" opacity=".8"/>
-    <circle cx="32" cy="16" r="4" fill="#c084fc" opacity=".8"/>
-    <circle cx="48" cy="22" r="4" fill="#c084fc" opacity=".8"/>
-    <rect x="10" y="44" width="44" height="5" rx="2.5" fill="#c084fc" opacity=".6"/>
-  </svg>`,
-  /* República – urna/voto */
-  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="14" y="28" width="36" height="26" rx="4" stroke="#4ade80" stroke-width="2.5" fill="rgba(74,222,128,.1)"/>
-    <rect x="20" y="22" width="24" height="8" rx="3" stroke="#4ade80" stroke-width="2" fill="rgba(74,222,128,.15)"/>
-    <path d="M29 16 L35 16 L32 22 Z" fill="#4ade80" opacity=".7"/>
-    <path d="M27 38 L32 43 L40 34" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`,
-  /* Dictadura – puño */
-  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="20" y="28" width="24" height="20" rx="5" stroke="#f87171" stroke-width="2.5" fill="rgba(248,113,113,.12)"/>
-    <rect x="22" y="20" width="6"  height="12" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
-    <rect x="29" y="18" width="6"  height="13" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
-    <rect x="36" y="20" width="6"  height="12" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
-    <path d="M20 36 L14 34 L14 38 L20 40" stroke="#f87171" stroke-width="2" fill="none"/>
-  </svg>`,
-  /* Aristocracia – columna/templo */
-  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="12" y="48" width="40" height="4" rx="2" fill="#fbbf24" opacity=".7"/>
-    <rect x="16" y="16" width="32" height="4" rx="2" fill="#fbbf24" opacity=".7"/>
-    <rect x="20" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
-    <rect x="30" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
-    <rect x="40" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
-    <polygon points="16,16 32,8 48,16" fill="#fbbf24" opacity=".4"/>
-  </svg>`,
-  /* Democracia – personas/comunidad */
-  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="32" cy="20" r="6"  stroke="#60a5fa" stroke-width="2.5" fill="rgba(96,165,250,.15)"/>
-    <circle cx="16" cy="38" r="5"  stroke="#60a5fa" stroke-width="2"   fill="rgba(96,165,250,.1)"/>
-    <circle cx="48" cy="38" r="5"  stroke="#60a5fa" stroke-width="2"   fill="rgba(96,165,250,.1)"/>
-    <path d="M22 44 Q16 44 14 52 L20 52" stroke="#60a5fa" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <path d="M42 44 Q48 44 50 52 L44 52" stroke="#60a5fa" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <path d="M26 28 Q20 28 18 36 L46 36 Q44 28 38 28 Q36 26 32 26 Q28 26 26 28Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,.1)"/>
-  </svg>`,
+/* ── DATOS ── */
+const ELEMENTS = {
+  poblacion:  { name:'Población',      icon:'👥', def:'Conjunto de personas que habitan el territorio y forman la base humana del Estado. Sin población no existe comunidad política ni legitimidad.', color:'#60a5fa' },
+  territorio: { name:'Territorio',     icon:'🗺️', def:'Espacio físico (tierra, mar y aire) sobre el que el Estado ejerce su autoridad. Define los límites de la jurisdicción estatal.', color:'#4ade80' },
+  gobierno:   { name:'Gobierno/Poder', icon:'🏛️', def:'Conjunto de instituciones y personas que ejercen el poder político para organizar, dirigir y administrar el Estado.', color:'#F0A500' },
+  soberania:  { name:'Soberanía',      icon:'🛡️', def:'Poder supremo e independiente del Estado para gobernarse sin interferencia externa. Implica autonomía e independencia plena.', color:'#c084fc' }
+};
+const ORDER = ['poblacion','territorio','gobierno','soberania'];
+
+const SCENARIOS = [
+  {
+    badge:'Escenario 1', title:'La Nación de Arcandia',
+    desc:'Arcandia tiene tierras fértiles, ciudadanos organizados y un parlamento activo. Sin embargo, otros países dictan sus leyes desde el exterior y no la reconocen como Estado independiente. ¿Qué elemento le falta para ser un Estado pleno?',
+    nationIcon:'🏔️', nationName:'Arcandia', missingKey:'soberania',
+    collapseMsg:'Sin soberanía, un Estado no puede decidir sobre sí mismo. Otro poder externo dicta sus leyes y políticas. No existe Estado independiente.',
+    successMsg:'¡Correcto! Arcandia necesitaba soberanía — el poder supremo de gobernarse sin interferencia externa.',
+    wrongMsg:'Ese elemento ya existe en Arcandia. El problema es que otro país dicta sus leyes. ¿Qué significa ser independiente?'
+  },
+  {
+    badge:'Escenario 2', title:'El caso de Valoria',
+    desc:'Valoria tiene un gobierno fuerte, ejército y leyes propias. Sus ciudadanos son reconocidos internacionalmente. Pero no tienen fronteras definidas: se desplazan sin un espacio físico delimitado. ¿Qué le falta?',
+    nationIcon:'⛺', nationName:'Valoria', missingKey:'territorio',
+    collapseMsg:'Sin territorio no hay fronteras ni jurisdicción. El Estado necesita un espacio físico delimitado para ejercer su autoridad.',
+    successMsg:'¡Correcto! Valoria requería territorio — el espacio físico sobre el que el Estado ejerce su poder.',
+    wrongMsg:'Valoria ya cuenta con eso. Sus ciudadanos no tienen espacio físico ni fronteras definidas. ¿Qué elemento representa eso?'
+  },
+  {
+    badge:'Escenario 3', title:'El Territorio de Norheim',
+    desc:'Norheim tiene vasto territorio y plena soberanía reconocida. Sus habitantes son millones. Pero en su interior no hay instituciones: nadie legisla, nadie juzga, nadie administra. ¿Qué le falta para funcionar como Estado?',
+    nationIcon:'🌲', nationName:'Norheim', missingKey:'gobierno',
+    collapseMsg:'Sin gobierno no hay quien ejerza el poder ni organice la vida en común. El Estado queda en anarquía.',
+    successMsg:'¡Correcto! Norheim necesitaba gobierno — las instituciones que ejercen y organizan el poder político.',
+    wrongMsg:'Norheim ya tiene eso. El problema es que nadie legisla ni administra. ¿Qué elemento representa el ejercicio del poder?'
+  }
 ];
 
-const PAIRS = [
-  { concept:"Monarquía",   icon:0, def:"El poder se hereda. Gobierna un rey o una reina como jefe del Estado.",                                        ex:"Ej: El Reino de España" },
-  { concept:"República",   icon:1, def:"El poder no se hereda. El jefe de Estado es elegido por la población o sus representantes.",                   ex:"Ej: México" },
-  { concept:"Dictadura",   icon:2, def:"El poder se concentra en una sola persona o grupo. No hay elecciones libres.",                                 ex:"Ej: Corea del Norte, Cuba" },
-  { concept:"Aristocracia",icon:3, def:"El poder está en manos de un grupo reducido basado en nobleza, élites o privilegios sociales.",                ex:"Ej: La Venecia medieval" },
-  { concept:"Democracia",  icon:4, def:"El poder reside en el pueblo. Los gobernantes son elegidos mediante elecciones libres.",                       ex:"Ej: Canadá, Alemania" },
-];
+/* ── ESTADO ── */
+let scIdx = 0, selElem = null, filled = {}, totOk = 0, totBad = 0;
 
-let sel=null, hits=0, miss=0;
+/* ── UTILS ── */
+const $  = id => document.getElementById(id);
+const fb = (msg,type) => { const f=$('fb'); f.innerHTML=msg; f.className='fb show '+type; };
+const noFb = () => { $('fb').className='fb'; };
 
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-function restart(){
-  sel=null;hits=0;miss=0;
-  ['c-hits','c-miss'].forEach(id=>document.getElementById(id).textContent=0);
-  document.getElementById('c-pts').textContent='0/5';
-  document.getElementById('result').classList.remove('show');
-  document.getElementById('game').style.display='';
-  hideFb();render();
+function updateProgress(){
+  const pct = (scIdx / SCENARIOS.length)*100;
+  $('progressFill').style.width = pct+'%';
+  $('progressSteps').textContent = scIdx+' / '+SCENARIOS.length;
 }
 
-function render(){
-  const sd=shuffle(PAIRS.map((p,i)=>({...p,idx:i})));
+function updateStatus(){
+  const n = Object.keys(filled).length;
+  const el = $('stateStatus'), tx = $('statusText');
+  tx.textContent = n+' / 4';
+  el.className = n===0?'state-status': n<4?'state-status partial':'state-status complete';
+}
 
-  const cEl=document.getElementById('concepts');
-  cEl.innerHTML='';
-  PAIRS.forEach((p,i)=>{
-    const d=document.createElement('div');
-    d.className='c-card';d.dataset.idx=i;
+/* ── LOAD SCENARIO ── */
+function loadScenario(idx){
+  if(idx >= SCENARIOS.length){ showResult(); return; }
+  const sc = SCENARIOS[idx];
+  selElem=null; filled={}; noFb();
+  $('defPanel').classList.remove('show');
+
+  $('scBadge').textContent    = sc.badge;
+  $('scTitle').textContent    = sc.title;
+  $('scDesc').textContent     = sc.desc;
+  $('nationIcon').textContent = sc.nationIcon;
+  $('nationName').textContent = sc.nationName;
+
+  // reset slots
+  ORDER.forEach(k=>{
+    const s=$('slot-'+k);
+    s.className='slot-card';
+    s.querySelector('.slot-check').style.display='none';
+  });
+  updateStatus();
+  updateProgress();
+
+  // render rack
+  const rack=$('rack'); rack.innerHTML='';
+  ORDER.forEach((k,i)=>{
+    const e=ELEMENTS[k], d=document.createElement('div');
+    d.className='elem-card'; d.dataset.key=k;
     d.style.animationDelay=(i*.06)+'s';
-    d.innerHTML=`<div class="c-visual">${ICONS[p.icon]}</div>
-      <div class="c-footer"><span class="c-name">${p.concept}</span><span class="c-dot"></span></div>`;
-    d.onclick=()=>pickConcept(i);
-    cEl.appendChild(d);
+    d.innerHTML=`<div class="elem-icon">${e.icon}</div><div class="elem-name">${e.name}</div>`;
+    d.onclick=()=>selectElem(k);
+    rack.appendChild(d);
   });
 
-  const dEl=document.getElementById('defs');
-  dEl.innerHTML='';
-  sd.forEach((p,si)=>{
-    const d=document.createElement('div');
-    d.className='d-card';d.dataset.idx=p.idx;
-    d.style.animationDelay=(si*.06)+'s';
-    d.innerHTML=`<span class="d-text">${p.def}</span><span class="d-ex">${p.ex}</span>`;
-    d.onclick=()=>pickDef(p.idx,d);
-    dEl.appendChild(d);
+  // show game sections
+  ['slotsSection','hintPill','rack','progressWrap','scenarioCard','nationHeader'].forEach(id=>{
+    const el=$(id); if(el) el.style.display='';
   });
+  document.querySelector('.rack-title').style.display='';
+  $('result').classList.remove('show');
+
+  fb('🗺️ Construye el Estado de <b>'+sc.nationName+'</b> colocando los 4 elementos. Uno es el que le falta.','info');
 }
 
-function pickConcept(idx){
-  const cards=document.querySelectorAll('.c-card');
-  if(cards[idx].classList.contains('ok'))return;
-  cards.forEach(c=>{if(!c.classList.contains('ok'))c.classList.remove('sel');});
-  cards[idx].classList.add('sel');
-  sel=idx;hideFb();
+/* ── SELECT ELEMENT ── */
+function selectElem(key){
+  if(filled[key]) return;
+  document.querySelectorAll('.elem-card').forEach(c=>{ if(!c.classList.contains('used')) c.classList.remove('selected'); });
+  ORDER.forEach(k=>{ if(!filled[k]) $('slot-'+k).classList.remove('active'); });
+
+  if(selElem===key){ selElem=null; noFb(); return; }
+  selElem=key;
+  document.querySelector(`.elem-card[data-key="${key}"]`).classList.add('selected');
+  ORDER.forEach(k=>{ if(!filled[k]) $('slot-'+k).classList.add('active'); });
+  fb('👆 Ahora toca el slot donde va <b style="color:#F0A500">'+ELEMENTS[key].name+'</b>','hint');
 }
 
-function pickDef(idx,el){
-  if(sel===null){showFb('👆 Primero selecciona una Forma de Gobierno a la izquierda.','hint');return;}
-  if(el.classList.contains('ok'))return;
-  const cc=document.querySelectorAll('.c-card');
-  if(sel===idx){
-    hits++;
-    document.getElementById('c-hits').textContent=hits;
-    document.getElementById('c-pts').textContent=hits+'/5';
-    cc[sel].classList.remove('sel');cc[sel].classList.add('ok');
-    el.classList.add('ok');
-    showFb('✓ ¡Correcto! '+PAIRS[idx].concept+': '+PAIRS[idx].def,'ok');
-    sel=null;
-    if(hits===PAIRS.length)setTimeout(showResult,900);
-  }else{
-    miss++;
-    document.getElementById('c-miss').textContent=miss;
-    cc[sel].classList.remove('sel');cc[sel].classList.add('err');
-    el.classList.add('err');
-    showFb('✗ Incorrecto. '+PAIRS[sel].concept+' no corresponde a esa definición. Inténtalo de nuevo.','err');
-    const s=sel;
-    setTimeout(()=>{cc[s].classList.remove('err','sel');el.classList.remove('err');},1200);
-    sel=null;
+/* ── PLACE ELEMENT ── */
+function placeElement(slotKey){
+  if(!selElem){ fb('Primero selecciona un elemento del rack.','hint'); return; }
+  if(filled[slotKey]){ fb('Ese slot ya está ocupado.','hint'); return; }
+
+  const sc=SCENARIOS[scIdx];
+
+  if(selElem===slotKey){
+    // ✅ CORRECTO
+    filled[slotKey]=true; totOk++;
+    const card=document.querySelector(`.elem-card[data-key="${selElem}"]`);
+    card.classList.remove('selected'); card.classList.add('used');
+    const slot=$('slot-'+slotKey);
+    ORDER.forEach(k=>{ if(!filled[k]) $('slot-'+k).classList.remove('active'); });
+    slot.classList.remove('active'); slot.classList.add('filled');
+    slot.querySelector('.slot-check').style.display='block';
+
+    updateStatus();
+    selElem=null;
+
+    if(slotKey===sc.missingKey){
+      fb('🎯 '+sc.successMsg,'ok');
+    } else {
+      fb('✓ '+ELEMENTS[slotKey].name+': '+ELEMENTS[slotKey].def,'ok');
+    }
+
+    if(Object.keys(filled).length===4) setTimeout(completeScenario,1100);
+  } else {
+    // ❌ INCORRECTO
+    totBad++;
+    const slot=$('slot-'+slotKey);
+    slot.classList.add('wrong');
+    setTimeout(()=>slot.classList.remove('wrong'),500);
+    const card=document.querySelector(`.elem-card[data-key="${selElem}"]`);
+    card.classList.add('wrong-anim');
+    setTimeout(()=>card.classList.remove('wrong-anim'),500);
+
+    if(slotKey===sc.missingKey){
+      // intentó poner otro elemento en el slot crítico → colapso
+      $('collapseMsg').textContent=sc.collapseMsg;
+      $('collapseOverlay').classList.add('show');
+      selElem=null;
+      document.querySelectorAll('.elem-card').forEach(c=>c.classList.remove('selected'));
+      ORDER.forEach(k=>{ if(!filled[k]) $('slot-'+k).classList.remove('active'); });
+    } else {
+      fb('✗ '+sc.wrongMsg,'err');
+    }
   }
 }
 
-function showFb(msg,type){const f=document.getElementById('fb');f.textContent=msg;f.className='fb show '+type;}
-function hideFb(){document.getElementById('fb').className='fb';}
-
-function showResult(){
-  document.getElementById('game').style.display='none';
-  document.getElementById('result').classList.add('show');
-  document.getElementById('r-score').textContent=hits;
-  document.getElementById('r-c').textContent='✔ '+hits+' correctas';
-  document.getElementById('r-w').textContent='✘ '+miss+' incorrectas';
-  const d=[
-    {e:'😟',m:'No te rindas, repasa las formas de gobierno e inténtalo de nuevo.'},
-    {e:'🤔',m:'Vas bien, algunos conceptos aún necesitan repaso.'},
-    {e:'😊',m:'Buen trabajo, ya tienes un manejo sólido del tema.'},
-    {e:'🏆',m:'¡Excelente! Dominaste completamente las Formas de Gobierno.'},
-  ];
-  const r=hits<=1?d[0]:hits<=3?d[1]:hits<=4?d[2]:d[3];
-  document.getElementById('r-emoji').textContent=r.e;
-  document.getElementById('r-msg').textContent=r.m;
+/* ── COMPLETE SCENARIO ── */
+function completeScenario(){
+  noFb();
+  const grid=$('defGrid'); grid.innerHTML='';
+  ORDER.forEach(k=>{
+    const e=ELEMENTS[k], d=document.createElement('div');
+    d.className='def-item';
+    d.style.borderColor=e.color;
+    d.innerHTML=`<div class="def-item-name" style="color:${e.color}">${e.icon} ${e.name}</div>
+      <div class="def-item-text">${e.def}</div>`;
+    grid.appendChild(d);
+  });
+  // botón siguiente
+  const btn=document.createElement('button');
+  btn.className='btn-next';
+  btn.textContent = scIdx+1 < SCENARIOS.length ? '→ Siguiente escenario' : '🏆 Ver resultado final';
+  btn.onclick=()=>{ btn.remove(); scIdx++; loadScenario(scIdx); };
+  grid.appendChild(btn);
+  $('defPanel').classList.add('show');
+  fb('🎉 ¡'+SCENARIOS[scIdx].nationName+' es un Estado completo! Revisa los conceptos.','ok');
 }
-restart();
+
+/* ── COLLAPSE ── */
+function closeCollapse(){
+  $('collapseOverlay').classList.remove('show');
+  fb('↩ Intenta de nuevo. ¿Cuál elemento realmente le falta al Estado?','hint');
+}
+function skipScenario(){
+  $('collapseOverlay').classList.remove('show');
+  scIdx++; loadScenario(scIdx);
+}
+
+/* ── RESULT ── */
+function showResult(){
+  ['slotsSection','hintPill','progressWrap','scenarioCard','nationHeader'].forEach(id=>{
+    const el=$(id); if(el) el.style.display='none';
+  });
+  document.querySelector('.rack-title').style.display='none';
+  $('rack').style.display='none';
+  noFb(); $('defPanel').classList.remove('show');
+  $('result').classList.add('show');
+  $('progressFill').style.width='100%';
+  $('progressSteps').textContent='3 / 3';
+
+  $('rC').textContent='✔ '+totOk+' correctas';
+  $('rW').textContent='✘ '+totBad+' incorrectas';
+  const p = totBad===0?3: totBad<=3?2: totBad<=6?1:0;
+  const D=[
+    {e:'😟',b:'Sigue practicando',  m:'Repasa los 4 elementos del Estado e inténtalo de nuevo.'},
+    {e:'🤔',b:'Buen intento',       m:'Ya reconoces algunos elementos. Un poco más de estudio y lo dominarás.'},
+    {e:'😊',b:'¡Muy bien!',         m:'Comprendes cómo se construye un Estado. Población, territorio, gobierno y soberanía trabajan juntos.'},
+    {e:'🏆',b:'¡Dominio total!',    m:'¡Perfecto! Dominas los 4 elementos del Estado y su función en el poder político.'}
+  ];
+  const d=D[p];
+  $('rEmoji').textContent=d.e; $('rBig').textContent=d.b; $('rMsg').textContent=d.m;
+}
+
+/* ── RESTART ── */
+function restartAll(){
+  scIdx=0; selElem=null; filled={}; totOk=0; totBad=0;
+  $('result').classList.remove('show');
+  loadScenario(0);
+}
+
+/* ── INIT ── */
+updateProgress();
+loadScenario(0);
 </script>
 </body>
 </html>
